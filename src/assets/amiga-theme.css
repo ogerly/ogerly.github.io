@@ -358,6 +358,16 @@ body {
   font-weight: bold;
 }
 
+/* Spielicon-Stil */
+.games-icon:after {
+  content: "G";
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  color: var(--dev-green);
+  font-weight: bold;
+}
+
 .window-controls {
   margin-left: auto;
   display: flex;

@@ -67,6 +67,16 @@
           </div>
         </div>
 
+        <!-- Games Window -->
+        <games-window
+          v-if="isGamesWindowOpen"
+          @close="isGamesWindowOpen = false"
+          @maximize="isGamesMaximized = !isGamesMaximized"
+          :class="{ maximized: isGamesMaximized, active: activeWindow === 'games' }"
+          @click="setActiveWindow('games')"
+          :style="getWindowPosition('games')"
+        ></games-window>
+
         <!-- Desktop icons -->
         <div class="desktop-icons">
           <div class="desktop-icon" @click="toggleWindow('about')">
@@ -89,12 +99,49 @@
             <div class="icon contact-icon"></div>
             <span>Contact</span>
           </div>
+          <desktop-icon
+            label="Games"
+            icon-class="games-icon"
+            @click="openGamesWindow"
+          />
+          <!-- Games Folder -->
+          <folder-icon 
+            label="Games" 
+            @click="openGamesFolder"
+          />
         </div>
 
         <!-- FloppyDisk animation -->
         <div class="disk-drive">
           <div class="disk-slot"></div>
           <div class="disk-led" :class="{ 'active': diskActivity }"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Games Folder Window (shows as disk drawer when opened) -->
+    <div v-if="isGamesFolderOpen && systemBooted" class="window folder-window"
+         :class="{ active: activeWindow === 'games-folder' }"
+         @click="setActiveWindow('games-folder')"
+         :style="getWindowPosition('games-folder')">
+      <div class="window-title" @mousedown="startDrag('games-folder', $event)">
+        <div class="title-icon folder-icon-title"></div>
+        <span>Games:</span>
+        <div class="window-controls">
+          <button class="depth-button"></button>
+          <button class="zoom-button" @click="maximizeFolderWindow('games-folder')"></button>
+          <button class="close-button" @click="isGamesFolderOpen = false"></button>
+        </div>
+      </div>
+      <div class="window-content folder-content">
+        <div class="title-bar blue-bar">Amiga Games</div>
+        <div class="folder-grid">
+          <div class="game-disk" v-for="game in gamesData" :key="game.id" @click="launchGame(game)">
+            <div class="disk-icon">
+              <div class="disk-label">{{ game.title.substring(0, 8) }}</div>
+            </div>
+            <span>{{ game.title }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -107,6 +154,9 @@ import SkillsComponent from './components/SkillsComponent.vue'
 import ProjectsComponent from './components/ProjectsComponent.vue'
 import ContactComponent from './components/ContactComponent.vue'
 import TerminalComponent from './components/TerminalComponent.vue'
+import GamesWindow from './components/GamesWindow.vue'
+import FolderIcon from './components/FolderIcon.vue'
+import { gamesData } from './assets/data/games.js'
 
 export default {
   name: 'AmigaWorkbench',
@@ -115,7 +165,9 @@ export default {
     SkillsComponent,
     ProjectsComponent,
     ContactComponent,
-    TerminalComponent
+    TerminalComponent,
+    GamesWindow,
+    FolderIcon
   },
   data() {
     return {
@@ -212,7 +264,14 @@ export default {
       },
       isDragging: false,
       currentDragWindow: null,
-      offset: { x: 0, y: 0 }
+      offset: { x: 0, y: 0 },
+      isGamesWindowOpen: false,
+      isGamesMaximized: false,
+      isGamesFolderOpen: false,
+      isGamesFolderMaximized: false,
+      gamesFolderPosition: { top: '50px', left: '100px', width: '400px', zIndex: 5 },
+      gamesFolderPreviousPosition: null,
+      gamesData: gamesData
     }
   },
   mounted() {
@@ -396,6 +455,49 @@ export default {
     },
     playCloseSound() {
       console.log('Close sound played');
+    },
+    openGamesWindow() {
+      this.isGamesWindowOpen = true;
+      this.setActiveWindow('games');
+    },
+    openGamesFolder() {
+      this.isGamesFolderOpen = true;
+      this.setActiveWindow('games-folder');
+      this.playDiskSound();
+    },
+    launchGame(game) {
+      this.selectedGame = game;
+      this.isGamesFolderOpen = false;
+      this.openGamesWindow();
+    },
+    getWindowPosition(windowName) {
+      if (windowName === 'games-folder') {
+        if (this.isGamesFolderMaximized) {
+          return {
+            top: '20px',
+            left: '0',
+            width: 'calc(100% - 4px)',
+            height: 'calc(100vh - 24px)',
+            zIndex: this.gamesFolderPosition.zIndex
+          };
+        } else {
+          return this.gamesFolderPosition;
+        }
+      }
+      // Handle other windows
+      return this.windows[windowName].position;
+    },
+    maximizeFolderWindow(windowName) {
+      if (windowName === 'games-folder') {
+        if (!this.isGamesFolderMaximized) {
+          this.gamesFolderPreviousPosition = {...this.gamesFolderPosition};
+          this.isGamesFolderMaximized = true;
+        } else {
+          this.gamesFolderPosition = this.gamesFolderPreviousPosition;
+          this.isGamesFolderMaximized = false;
+        }
+        this.playClickSound();
+      }
     }
   }
 }
@@ -403,4 +505,88 @@ export default {
 
 <style>
 @import './assets/amiga-theme.css';
+
+/* Zusätzliche Stile für den Spiele-Ordner */
+.folder-window {
+  min-width: 300px;
+}
+
+.folder-icon-title {
+  background-color: var(--folder-yellow) !important;
+}
+
+.folder-icon-title:after {
+  content: "G";
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  color: var(--text-dark);
+  font-weight: bold;
+}
+
+.folder-content {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 15px;
+  padding: 15px;
+}
+
+.game-disk {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+}
+
+.disk-icon {
+  width: 60px;
+  height: 60px;
+  background-color: #333;
+  border: 2px solid #666;
+  border-radius: 3px;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.disk-icon:before {
+  content: "";
+  position: absolute;
+  width: 70%;
+  height: 10px;
+  background: #222;
+  bottom: 10px;
+  left: 15%;
+}
+
+.disk-label {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  color: white;
+  font-size: 10px;
+  text-align: center;
+}
+
+.game-disk span {
+  background-color: var(--workbench-blue);
+  color: var(--text-light);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 11px;
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.game-disk:hover .disk-icon {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 5px rgba(0,0,0,0.3);
+}
 </style>
