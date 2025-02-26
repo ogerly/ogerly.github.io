@@ -1,0 +1,634 @@
+:root {
+  --workbench-blue: #5A7594;
+  --window-blue: #0055aa;
+  --window-gray: #c0c0c0;
+  --text-dark: #000;
+  --text-light: #fff;
+  --accent-magenta: #ff00ff;
+  --folder-yellow: #ffaa00;
+  --dev-green: #00aa00;
+  --boot-blue: #0000aa;
+}
+
+/* Reset and basics */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Topaz', 'Courier New', monospace;
+}
+
+/* Override Vue default styling that might interfere */
+#app {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw;
+  height: 100vh;
+  display: block !important;
+}
+
+@media (min-width: 1024px) {
+  #app {
+    display: block !important;
+    grid-template-columns: unset !important;
+    padding: 0 !important;
+  }
+  
+  body {
+    display: block !important;
+    place-items: unset !important;
+  }
+}
+
+/* Amiga System Container */
+.amiga-system {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Boot Sequence with improved styling */
+.boot-sequence {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--boot-blue);
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.boot-screen {
+  text-align: left;
+  margin-top: -100px;
+  width: 80%;
+  max-width: 600px;
+}
+
+.floppy-animation {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.floppy-disk {
+  width: 80px;
+  height: 80px;
+  background-color: #333;
+  border: 2px solid #666;
+  position: relative;
+  margin-right: 20px;
+}
+
+.floppy-disk:before {
+  content: "";
+  position: absolute;
+  width: 70%;
+  height: 10px;
+  background: #222;
+  bottom: 10px;
+  left: 15%;
+}
+
+.floppy-led {
+  width: 15px;
+  height: 15px;
+  background-color: #333;
+  border-radius: 50%;
+  position: relative;
+}
+
+.floppy-led.led-active {
+  background-color: #f00;
+  box-shadow: 0 0 10px #f00;
+  animation: blink 1s infinite;
+}
+
+.boot-messages div {
+  margin: 8px 0;
+  font-family: 'Topaz', monospace;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s, transform 0.5s;
+  line-height: 1.4;
+}
+
+.boot-messages div.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Workbench */
+.workbench {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--workbench-blue);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top bar styling */
+.topbar {
+  background-color: var(--text-light);
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  border-bottom: 1px solid var(--text-dark);
+  height: 20px;
+  z-index: 1000;
+}
+
+.workbench-icon {
+  width: 20px;
+  height: 16px;
+  background-color: var(--text-dark);
+  margin-right: 8px;
+  position: relative;
+  cursor: pointer;
+}
+
+.workbench-icon:after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 8px;
+  background-color: var(--workbench-blue);
+}
+
+.menu-items {
+  display: flex;
+  gap: 20px;
+  position: relative;
+}
+
+.menu-items span {
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.menu-items span:hover {
+  background-color: var(--window-blue);
+  color: var(--text-light);
+}
+
+.memory-indicator {
+  margin-left: auto;
+  font-size: 12px;
+}
+
+.clock {
+  background: var(--text-dark);
+  color: var(--text-light);
+  padding: 0 3px;
+  margin-left: 5px;
+}
+
+/* Dropdown menus */
+.dropdown-menu {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  background-color: var(--text-light);
+  border: 1px solid var(--text-dark);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  z-index: 2000;
+  min-width: 150px;
+}
+
+.dropdown-menu.workbench {
+  left: 0;
+}
+
+.dropdown-menu.disk {
+  left: 80px;
+}
+
+.dropdown-menu.system {
+  left: 140px;
+}
+
+.dropdown-menu.special {
+  left: 200px;
+}
+
+.menu-item {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background-color: var(--window-blue);
+  color: var(--text-light);
+}
+
+.menu-separator {
+  height: 1px;
+  background-color: var(--text-dark);
+  margin: 5px 0;
+}
+
+/* Desktop */
+.desktop {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  padding: 5px;
+}
+
+/* Improve window styling */
+.window {
+  position: absolute;
+  background-color: var(--window-gray);
+  border: 1px solid var(--text-dark);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+  min-width: 320px;
+  min-height: 200px;
+  z-index: 1;
+  transition: box-shadow 0.2s, transform 0.3s;
+  transform-origin: center;
+}
+
+.window:before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: repeating-conic-gradient(
+    var(--text-dark) 0% 25%, 
+    var(--workbench-blue) 0% 50%
+  ) 50% / 4px 4px;
+  z-index: -1;
+}
+
+.window.active {
+  box-shadow: 5px 5px 0 rgba(0,0,0,0.7);
+  z-index: 10 !important;
+  transform: scale(1.01);
+}
+
+.window.maximized {
+  box-shadow: none;
+}
+
+.window-title {
+  background-color: var(--window-blue);
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  height: 18px;
+  cursor: move;
+}
+
+.title-icon {
+  width: 16px;
+  height: 16px;
+  background-color: var(--text-light);
+  margin-right: 4px;
+  position: relative;
+}
+
+.about-icon:after {
+  content: "i";
+  position: absolute;
+  top: 0;
+  left: 6px;
+  color: var(--window-blue);
+  font-weight: bold;
+}
+
+.skills-icon:after {
+  content: "S";
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  color: var(--window-blue);
+  font-weight: bold;
+}
+
+.projects-icon:after {
+  content: "P";
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  color: var(--window-blue);
+  font-weight: bold;
+}
+
+.terminal-icon {
+  background-color: var(--text-dark) !important;
+}
+
+.terminal-icon:after {
+  content: ">";
+  position: absolute;
+  top: 0px;
+  left: 5px;
+  color: var(--text-light);
+  font-weight: bold;
+}
+
+.contact-icon:after {
+  content: "@";
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  color: var(--window-blue);
+  font-weight: bold;
+}
+
+.window-controls {
+  margin-left: auto;
+  display: flex;
+  gap: 2px;
+}
+
+.depth-button,
+.zoom-button,
+.close-button {
+  width: 16px;
+  height: 16px;
+  background-color: var(--window-gray);
+  border: 1px solid var(--text-dark);
+  box-shadow: 1px 1px 0 var(--text-light) inset, -1px -1px 0 #555 inset;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.close-button:hover {
+  background-color: #f88;
+}
+
+.close-button:after {
+  content: "×";
+  position: absolute;
+  top: -3px;
+  left: 3px;
+  font-size: 16px;
+  color: #333;
+}
+
+.zoom-button:after {
+  content: "□";
+  position: absolute;
+  top: -3px;
+  left: 3px;
+  font-size: 14px;
+  color: #333;
+}
+
+.depth-button:after {
+  content: "_";
+  position: absolute;
+  top: -7px;
+  left: 5px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Improve window content styling */
+.window-content {
+  padding: 10px;
+  overflow: auto;
+  max-height: calc(100vh - 60px);
+  background-color: var(--window-gray);
+}
+
+/* Title bar styles */
+.title-bar {
+  margin: -10px -10px 10px -10px;
+  padding: 4px;
+  font-weight: bold;
+}
+
+.blue-bar {
+  background-color: var(--window-blue);
+  color: var(--text-light);
+}
+
+/* Improve text content */
+.text-content {
+  background-color: var(--text-light);
+  border: 1px solid var(--text-dark);
+  padding: 15px;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.text-content h2 {
+  color: var(--window-blue);
+  margin-bottom: 10px;
+  font-size: 16px;
+  border-bottom: 1px solid var(--accent-magenta);
+  padding-bottom: 3px;
+}
+
+/* Desktop icons */
+.desktop-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  width: 80px;
+  text-align: center;
+}
+
+/* Improve icons */
+.desktop-icon .icon {
+  width: 40px;
+  height: 40px; /* slightly taller */
+  margin-bottom: 4px;
+  position: relative;
+  background-color: var(--window-blue);
+  border-radius: 3px;
+  border: 1px solid #003366;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  transition: all 0.2s;
+}
+
+.icon:hover {
+  filter: brightness(1.2);
+  transform: translateY(-2px);
+}
+
+.desktop-icon span {
+  background-color: var(--workbench-blue);
+  color: var(--text-light);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 12px;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+/* Disk drive */
+.disk-drive {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 100px;
+  height: 20px;
+  background-color: #333;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.disk-slot {
+  flex: 1;
+  height: 3px;
+  background-color: #222;
+}
+
+.disk-led {
+  width: 8px;
+  height: 8px;
+  background-color: #400;
+  border-radius: 50%;
+  margin-left: 5px;
+  box-shadow: inset 0 0 2px #200;
+  transition: all 0.2s;
+}
+
+.disk-led.active {
+  background-color: #f00;
+  box-shadow: 0 0 10px #f00, inset 0 0 4px #800;
+  animation: blink 0.3s infinite;
+}
+
+/* Animations */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Skills grid styling */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 10px;
+}
+
+/* Fix skills grid */
+.skill-category {
+  background: var(--text-light);
+  border: 1px solid var(--text-dark);
+  padding: 10px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.skill-category h3 {
+  color: var(--window-blue);
+  margin-bottom: 10px;
+  font-size: 16px;
+  border-bottom: 1px solid var(--accent-magenta);
+  padding-bottom: 2px;
+}
+
+/* Add authentic Amiga fonts with CORS-safe URLs */
+@font-face {
+  font-family: 'Topaz';
+  src: url('https://cdn.jsdelivr.net/gh/rewtnull/amigafonts/ttf/Topaz_a500_v1.0.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TopazPlus';
+  src: url('https://cdn.jsdelivr.net/gh/rewtnull/amigafonts/ttf/TopazPlus_a1200_v1.0.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Media queries for responsive layout on different screen sizes */
+@media (max-width: 768px) {
+  .window {
+    min-width: 280px;
+  }
+  
+  .desktop-icons {
+    right: 10px;
+    top: 10px;
+    gap: 10px;
+  }
+  
+  .desktop-icon .icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .skills-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+/* Make sure the app takes full width on mobile devices */
+@media (max-width: 480px) {
+  .window {
+    min-width: 95vw;
+    left: 2.5vw !important;
+  }
+  
+  .window.maximized {
+    left: 0 !important;
+    width: 100vw !important;
+  }
+  
+  .menu-items {
+    gap: 10px;
+  }
+  
+  .desktop-icons {
+    gap: 5px;
+    display: flex;
+    flex-direction: row;
+    right: unset;
+    top: unset;
+    bottom: 50px;
+    left: 10px;
+    width: calc(100vw - 20px);
+    justify-content: space-around;
+  }
+  
+  .desktop-icon {
+    width: auto;
+  }
+}
