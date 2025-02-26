@@ -1,0 +1,49 @@
+name: Deploy to GitHub Pages
+
+on:
+  # Läuft bei Pushes auf den main Branch
+  push:
+    branches: [ main ]
+  # Ermöglicht manuelles Auslösen des Workflows
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js ⚙️
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install Dependencies 📦
+        run: npm ci
+      
+      - name: Build Project 🔨
+        run: npm run build
+      
+      - name: Prepare Assets 🖼️
+        run: |
+          mkdir -p dist/ttf dist/cursor dist/screens
+          # Schriftarten herunterladen
+          curl -s -o "dist/ttf/topaz.ttf" https://cdn.jsdelivr.net/gh/rewtnull/amigafonts/ttf/Topaz_a500_v1.0.ttf
+          curl -s -o "dist/ttf/TopazPlus.ttf" https://cdn.jsdelivr.net/gh/rewtnull/amigafonts/ttf/TopazPlus_a1200_v1.0.ttf
+          # Assets kopieren
+          cp -r public/cursor/* dist/cursor/ || true
+          cp -r public/screens/* dist/screens/ || true
+          cp public/favicon.ico dist/ || true
+          # .nojekyll für GitHub Pages erstellen
+          touch dist/.nojekyll
+      
+      - name: Deploy to GitHub Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist           # Der Ordner, der deployt werden soll
+          branch: gh-pages       # Der Branch, auf den deployt wird
+          clean: true            # Löscht existierende Dateien im gh-pages Branch
+          token: ${{ secrets.GITHUB_TOKEN }} # GitHub stellt automatisch ein Token bereit
