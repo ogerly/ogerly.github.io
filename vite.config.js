@@ -8,7 +8,7 @@ export default defineConfig({
   
   // WICHTIG: base muss dem GitHub Repository-Namen entsprechen
   // Bei Änderung des Repository-Namens muss dieser Wert angepasst werden
-  base: '/DEVmatrose-website2/', 
+  base: '/DEVmatrose-website/', 
   
   resolve: {
     alias: {

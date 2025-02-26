@@ -3,7 +3,7 @@
 ## Vor dem Deployment
 
 1. **Konfiguration prüfen**
-   - [ ] `vite.config.js`: Überprüfe, ob `base: '/DEVmatrose-website2/'` korrekt eingestellt ist
+   - [ ] `vite.config.js`: Überprüfe, ob `base: '/DEVmatrose-website/'` korrekt eingestellt ist
    - [ ] Stelle sicher, dass alle Assets relativen Pfaden oder korrekten absoluten Pfaden verwenden
 
 2. **Assets vorbereiten**
@@ -14,7 +14,7 @@
      - [ ] `/public/favicon.ico`
 
 3. **Font-Pfade überprüfen**
-   - [ ] In `src/assets/amiga-theme.css`: Die Font-URLs sollten auf `/DEVmatrose-website2/ttf/` verweisen
+   - [ ] In `src/assets/amiga-theme.css`: Die Font-URLs sollten auf `/DEVmatrose-website/ttf/` verweisen
 
 ## Build-Prozess
 
@@ -56,7 +56,7 @@ Dieses Skript führt dich durch den gesamten Prozess mit Optionen zum Testen und
 ## Nach dem Deployment
 
 1. **Website testen**
-   - [ ] Öffne https://ogerly.github.io/DEVmatrose-website2/
+   - [ ] Öffne https://ogerly.github.io/DEVmatrose-website/
    - [ ] Überprüfe die Browser-Konsole auf Fehler
    - [ ] Teste alle Funktionen der Website
 

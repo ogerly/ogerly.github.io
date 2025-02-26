@@ -30,9 +30,9 @@ git commit -m 'Deploy auf GitHub Pages'
 
 # Push zu GitHub Pages-Branch
 # Stelle sicher, dass du Zugriff auf das Repository hast
-git push -f git@github.com:ogerly/DEVmatrose-website2.git gh-pages:gh-pages
+git push -f git@github.com:ogerly/DEVmatrose-website.git gh-pages:gh-pages
 
 # Zurück zum ursprünglichen Verzeichnis
 cd -
 
-echo "Deployment abgeschlossen! Überprüfe deine Seite unter https://ogerly.github.io/DEVmatrose-website2/"
+echo "Deployment abgeschlossen! Überprüfe deine Seite unter https://ogerly.github.io/DEVmatrose-website/"

@@ -55,13 +55,13 @@ if [[ "$response" != "n" && "$response" != "N" ]]; then
     # Push zu GitHub Pages-Branch
     echo -e "${YELLOW}Pushe zu GitHub Pages...${NC}"
     echo -e "${YELLOW}Bitte stelle sicher, dass du Zugriff auf das Repository hast!${NC}"
-    git push -f git@github.com:ogerly/DEVmatrose-website2.git gh-pages:gh-pages
+    git push -f git@github.com:ogerly/DEVmatrose-website.git gh-pages:gh-pages
 
     # Zurück zum ursprünglichen Verzeichnis
     cd -
 
     echo -e "\n${GREEN}Deployment abgeschlossen! Überprüfe deine Seite unter:${NC}"
-    echo -e "${GREEN}https://ogerly.github.io/DEVmatrose-website2/${NC}"
+    echo -e "${GREEN}https://ogerly.github.io/DEVmatrose-website/${NC}"
 else
     echo -e "\n${YELLOW}Deployment übersprungen.${NC}"
 fi

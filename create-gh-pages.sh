@@ -36,7 +36,7 @@ echo -e "${YELLOW}Pushe zu GitHub Pages...${NC}"
 echo -e "${YELLOW}Gib deine GitHub-Anmeldeinformationen ein, wenn dazu aufgefordert wird.${NC}"
 
 # Alternativ mit HTTPS URL (einfacher für erste Einrichtung)
-git push -f https://github.com/ogerly/DEVmatrose-website2.git gh-pages
+git push -f https://github.com/ogerly/DEVmatrose-website.git gh-pages
 
 echo -e "\n${GREEN}Branch erstellt und gepusht. Überprüfe nun die GitHub Pages-Einstellungen:${NC}"
-echo -e "${GREEN}https://github.com/ogerly/DEVmatrose-website2/settings/pages${NC}"
+echo -e "${GREEN}https://github.com/ogerly/DEVmatrose-website/settings/pages${NC}"

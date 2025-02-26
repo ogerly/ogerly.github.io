@@ -40,16 +40,16 @@ if [ $? -eq 0 ]; then
 else
   echo -e "${RED}✗${NC} SSH-Verbindung zu GitHub hat Probleme"
   echo -e "Versuche, mit HTTPS zu pushen:"
-  echo -e "git push -f https://github.com/ogerly/DEVmatrose-website2.git gh-pages"
+  echo -e "git push -f https://github.com/ogerly/DEVmatrose-website.git gh-pages"
 fi
 
 # 4. Prüfe GitHub Pages Status
 echo -e "\n${YELLOW}4. GitHub Pages Status${NC}"
 echo -e "Öffne diese URL, um den Status der GitHub Pages zu prüfen:"
-echo -e "${GREEN}https://github.com/ogerly/DEVmatrose-website2/settings/pages${NC}"
+echo -e "${GREEN}https://github.com/ogerly/DEVmatrose-website/settings/pages${NC}"
 echo -e "Es kann bis zu 10 Minuten dauern, bis Änderungen live sind."
 
 # 5. Vorschlag für manuelle Behebung
 echo -e "\n${YELLOW}5. Manuelles Deployment${NC}"
 echo -e "Wenn alles andere fehlschlägt, versuche diesen Befehl:"
-echo -e "cd dist && git init && git checkout -b gh-pages && git add . && git commit -m 'Manual deploy' && git push -f https://github.com/ogerly/DEVmatrose-website2.git gh-pages"
+echo -e "cd dist && git init && git checkout -b gh-pages && git add . && git commit -m 'Manual deploy' && git push -f https://github.com/ogerly/DEVmatrose-website.git gh-pages"

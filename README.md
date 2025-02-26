@@ -71,7 +71,7 @@ Das Projekt ist so konfiguriert, dass es automatisch auf GitHub Pages bereitgest
 
 2. Oder durch Push auf den main-Branch, der die GitHub Action auslöst
 
-Nach dem Deployment ist die Website unter `https://[username].github.io/DEVmatrose-website2/` verfügbar.
+Nach dem Deployment ist die Website unter `https://[username].github.io/DEVmatrose-website/` verfügbar.
 
 ## Über DEVmatrose
 
