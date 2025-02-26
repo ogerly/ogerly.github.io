@@ -55,4 +55,4 @@ jobs:
           repository-name: ogerly/ogerly.github.io
           branch: main  # Bei User Pages muss der Branch 'main' oder 'master' heißen
           clean: true
-          token: ${{ secrets.PERSONAL_TOKEN }}  # Benötigt einen PAT mit repo-Rechten
+          token: ${{ secrets.GITHUB_TOKEN }}  # Wird von GitHub erstellt
