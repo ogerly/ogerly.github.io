@@ -99,16 +99,15 @@
             <div class="icon contact-icon"></div>
             <span>Contact</span>
           </div>
-          <desktop-icon
-            label="Games"
-            icon-class="games-icon"
-            @click="openGamesWindow"
-          />
-          <!-- Games Folder -->
+          <!-- Entfernung des doppelten Games-Icons -->
           <folder-icon 
             label="Games" 
             @click="openGamesFolder"
           />
+          <div class="desktop-icon" @click="toggleWindow('nostr')">
+            <div class="icon nostr-icon"></div>
+            <span>NostrOS</span>
+          </div>
         </div>
 
         <!-- FloppyDisk animation -->
@@ -156,6 +155,7 @@ import ContactComponent from './components/ContactComponent.vue'
 import TerminalComponent from './components/TerminalComponent.vue'
 import GamesWindow from './components/GamesWindow.vue'
 import FolderIcon from './components/FolderIcon.vue'
+import NostrWindow from './components/NostrWindow.vue'
 import { gamesData } from './assets/data/games.js'
 import DesktopIcon from './components/DesktopIcon.vue'
 
@@ -169,7 +169,8 @@ export default {
     TerminalComponent,
     GamesWindow,
     FolderIcon,
-    DesktopIcon
+    DesktopIcon,
+    NostrWindow
   },
   data() {
     return {
@@ -262,6 +263,16 @@ export default {
           data: {
             welcomeText: '1> Welcome to AmigaDOS\n1> Type "help" for commands\n'
           }
+        },
+        nostr: {
+          visible: false,
+          title: 'NostrOS 1.3',
+          subtitle: 'Decentralized Social Network',
+          position: { top: '30px', left: '220px', width: '600px', height: '500px', zIndex: 5 },
+          isMaximized: false,
+          previousPosition: null,
+          component: 'NostrWindow',
+          data: {}
         }
       },
       isDragging: false,
@@ -507,88 +518,5 @@ export default {
 
 <style>
 @import './assets/amiga-theme.css';
-
-/* Zusätzliche Stile für den Spiele-Ordner */
-.folder-window {
-  min-width: 300px;
-}
-
-.folder-icon-title {
-  background-color: var(--folder-yellow) !important;
-}
-
-.folder-icon-title:after {
-  content: "G";
-  position: absolute;
-  top: 1px;
-  left: 5px;
-  color: var(--text-dark);
-  font-weight: bold;
-}
-
-.folder-content {
-  max-height: 500px;
-  overflow-y: auto;
-}
-
-.folder-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 15px;
-  padding: 15px;
-}
-
-.game-disk {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  text-align: center;
-}
-
-.disk-icon {
-  width: 60px;
-  height: 60px;
-  background-color: #333;
-  border: 2px solid #666;
-  border-radius: 3px;
-  position: relative;
-  margin-bottom: 5px;
-}
-
-.disk-icon:before {
-  content: "";
-  position: absolute;
-  width: 70%;
-  height: 10px;
-  background: #222;
-  bottom: 10px;
-  left: 15%;
-}
-
-.disk-label {
-  position: absolute;
-  top: 10px;
-  width: 100%;
-  color: white;
-  font-size: 10px;
-  text-align: center;
-}
-
-.game-disk span {
-  background-color: var(--workbench-blue);
-  color: var(--text-light);
-  padding: 1px 4px;
-  border-radius: 3px;
-  font-size: 11px;
-  max-width: 90px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.game-disk:hover .disk-icon {
-  transform: translateY(-2px);
-  box-shadow: 0 3px 5px rgba(0,0,0,0.3);
-}
+@import './assets/app-styles.css';
 </style>

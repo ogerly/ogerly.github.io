@@ -364,7 +364,17 @@ body {
   position: absolute;
   top: 1px;
   left: 5px;
-  color: var(--dev-green);
+  color: var (--dev-green);
+  font-weight: bold;
+}
+
+/* Nostr-Icon-Stil */
+.nostr-icon:after {
+  content: "N";
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  color: #5599FF;
   font-weight: bold;
 }
 

@@ -13,6 +13,7 @@
     "prepare-assets": "mkdir -p dist/ttf dist/cursor dist/screens && curl -s -o 'dist/ttf/topaz.ttf' https://cdn.jsdelivr.net/gh/rewtnull/amigafonts/ttf/Topaz_a500_v1.0.ttf && curl -s -o 'dist/ttf/TopazPlus.ttf' https://cdn.jsdelivr.net/gh/rewtnull/amigafonts/ttf/TopazPlus_a1200_v1.0.ttf && cp -r public/* dist/ 2>/dev/null || true && touch dist/.nojekyll"
   },
   "dependencies": {
+    "nostr-tools": "^2.10.4",
     "vue": "^3.3.11"
   },
   "devDependencies": {

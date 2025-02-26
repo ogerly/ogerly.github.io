@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,7 +13,7 @@ export default defineConfig({
   
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': path.resolve(__dirname, './src')
     }
   },
   
@@ -25,11 +26,17 @@ export default defineConfig({
     
     // Verbesserte Asset-Handhabung
     rollupOptions: {
+      // Stelle sicher, dass nostr-tools korrekt verarbeitet wird
+      external: ['nostr-tools'],
       output: {
         // Weniger kryptische Dateinamen für einfachere Fehlersuche
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+        // Behandle die externen Bibliotheken korrekt im Build-Prozess
+        globals: {
+          'nostr-tools': 'NostrTools'
+        }
       }
     }
   },
@@ -37,5 +44,10 @@ export default defineConfig({
   // Optimiere die CSS-Handhabung
   css: {
     devSourcemap: true // Hilft bei der Fehlersuche in CSS
+  },
+  
+  optimizeDeps: {
+    // Füge nostr-tools zur Optimierung hinzu
+    include: ['nostr-tools']
   }
 })

@@ -1,0 +1,110 @@
+/* App-spezifische Stile */
+
+/* Zusätzliche Stile für den Spiele-Ordner */
+.folder-window {
+  min-width: 300px;
+}
+
+.folder-icon-title {
+  background-color: var(--folder-yellow) !important;
+}
+
+.folder-icon-title:after {
+  content: "G";
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  color: var(--text-dark);
+  font-weight: bold;
+}
+
+.folder-content {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 15px;
+  padding: 15px;
+}
+
+.game-disk {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+}
+
+.disk-icon {
+  width: 60px;
+  height: 60px;
+  background-color: #333;
+  border: 2px solid #666;
+  border-radius: 3px;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.disk-icon:before {
+  content: "";
+  position: absolute;
+  width: 70%;
+  height: 10px;
+  background: #222;
+  bottom: 10px;
+  left: 15%;
+}
+
+.disk-label {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  color: white;
+  font-size: 10px;
+  text-align: center;
+}
+
+.game-disk span {
+  background-color: var(--workbench-blue);
+  color: var(--text-light);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 11px;
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.game-disk:hover .disk-icon {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 5px rgba(0,0,0,0.3);
+}
+
+/* NostrOS Amiga-Client spezifische Stile */
+.nostr-window {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Responsive Anpassungen für kleinere Bildschirme */
+@media (max-width: 768px) {
+  .folder-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+  }
+  
+  .disk-icon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .folder-window {
+    min-width: 95vw;
+  }
+}
