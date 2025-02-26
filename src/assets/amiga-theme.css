@@ -561,7 +561,7 @@ body {
   padding-bottom: 2px;
 }
 
-/* Korrigierte Pfade für die Schriftarten mit dem neuen Repository-Namen */
+/* Korrigierte Pfade für die Schriftarten - relative URLs ohne Repository-Namen */
 @font-face {
   font-family: 'Topaz';
   src: url('/ttf/topaz.ttf') format('truetype');

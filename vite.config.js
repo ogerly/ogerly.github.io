@@ -8,7 +8,7 @@ export default defineConfig({
   
   // Bei User Page (ogerly.github.io): base: '/'
   // Bei Project Page (ogerly.github.io/DEVmatrose-website): base: '/DEVmatrose-website/'
-  base: '/DEVmatrose-website/',
+  base: '',
   
   resolve: {
     alias: {
