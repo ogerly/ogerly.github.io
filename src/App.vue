@@ -157,6 +157,7 @@ import TerminalComponent from './components/TerminalComponent.vue'
 import GamesWindow from './components/GamesWindow.vue'
 import FolderIcon from './components/FolderIcon.vue'
 import { gamesData } from './assets/data/games.js'
+import DesktopIcon from './components/DesktopIcon.vue'
 
 export default {
   name: 'AmigaWorkbench',
@@ -167,7 +168,8 @@ export default {
     ContactComponent,
     TerminalComponent,
     GamesWindow,
-    FolderIcon
+    FolderIcon,
+    DesktopIcon
   },
   data() {
     return {
