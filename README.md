@@ -1,98 +1,89 @@
 # DEVmatrose Website
 
-Eine interaktive Single-Page-Anwendung im Amiga-500-Retro-Design, die Alexander Friedland (alias @ogerly) und seine Firma DEVmatrose vorstellt.
+Eine moderne Entwickler-Website im Retro-Amiga-Design. Diese Website demonstriert Frontend-Entwicklung mit Vue.js und eine nostalgische Benutzeroberfläche inspiriert vom klassischen Amiga Workbench.
 
-![Bildschirmfoto vom 2025-02-26 13-30-53](https://github.com/user-attachments/assets/f11dbce2-77db-45a5-b3d7-cf914c2268bc)
-![Bildschirmfoto vom 2025-02-26 13-30-46](https://github.com/user-attachments/assets/19a4f325-5cf6-4209-8e53-aec2ef3318b0)
-![Bildschirmfoto vom 2025-02-26 14-01-34](https://github.com/user-attachments/assets/04dae2b0-ac2e-46f8-bc03-26ecc65d5abc)
+## Features
 
+- 🖥️ Authentisches Amiga OS Look-and-Feel
+- 🚀 Vue.js Framework für reaktive UI-Komponenten
+- 📱 Vollständig responsive Darstellung
+- ⚡ Optimiert mit Vite für schnelles Development und Build
+- 🎨 Pixelgenaue Nachbildung der Amiga-UI-Elemente
+- 🔄 Interaktive Fenster mit Drag & Drop
 
+## Entwicklung
 
-## Live-Demo
-
-Die Live-Demo der Anwendung ist hier verfügbar: [https://ogerly.github.io/Devmatrose-website/](https://ogerly.github.io/Devmatrose-website/)
-
-## Über das Projekt
-
-Diese Website verwendet ein authentisches Amiga Workbench Design, um Alexander Friedland und seine Arbeit als Full-Stack-Entwickler und Gründer von DEVmatrose zu präsentieren. Die interaktive Benutzeroberfläche bietet ein voll funktionsfähiges Amiga-OS-ähnliches Erlebnis mit:
-
-- Boot-Animation und Sequenz
-- Fenster, die man verschieben, maximieren und schließen kann
-- Desktop-Icons zur Navigation
-- Amiga-typische Menüs und Design-Elemente
-- Simulierte Diskettenlaufwerke mit LED-Animation
-- Terminal-Emulator mit grundlegenden Befehlen
-
-## Funktionen
-
-- **About:** Informationen über Alexander Friedland und seinen Werdegang
-- **Skills:** Technische Expertise und Fähigkeiten
-- **Projekte:** Übersicht über ausgewählte Arbeiten
-- **Terminal:** Interaktive CLI für nostalgische Amiga-Fans
-- **Kontakt:** Kontaktmöglichkeiten und Links
-
-## Technologien
-
-- Vue.js
-- CSS3 mit authentischen Amiga-Stilen
-- JavaScript ES6+
-- Externe Amiga-Schriftarten
-
-## Installation und Start
+### Setup
 
 ```bash
-# Repository klonen
-git clone https://github.com/ogerly/DEVmatrose-website.git
-
-# Ins Verzeichnis wechseln
-cd DEVmatrose-website
-
 # Abhängigkeiten installieren
 npm install
-
-# Entwicklungsserver starten
-npm run dev
-
-# Für Produktionsumgebung bauen
-npm run build
 ```
 
-## Deployment auf GitHub Pages
+### Lokaler Entwicklungsserver
 
-Das Projekt ist so konfiguriert, dass es automatisch auf GitHub Pages bereitgestellt werden kann:
+```bash
+# Startet den Entwicklungsserver mit Hot-Reload
+npm run dev
+```
 
-1. Entweder manuell mit dem Deploy-Skript:
-   ```bash
-   # Ausführungsrechte für das Skript hinzufügen
-   chmod +x deploy.sh
-   # Skript ausführen
-   ./deploy.sh
-   ```
+### Build für Produktion
 
-2. Oder durch Push auf den main-Branch, der die GitHub Action auslöst
+```bash
+# Erstellt optimierte Produktionsdateien
+npm run build
 
-Nach dem Deployment ist die Website unter `https://[username].github.io/DEVmatrose-website/` verfügbar.
+# Vorschau des Builds
+npm run preview
+```
 
-## Über DEVmatrose
+### Deployment auf GitHub Pages
 
-DEVmatrose ist das Unternehmen von Alexander Friedland (@ogerly), spezialisiert auf maßgeschneiderte Softwarelösungen mit Fokus auf innovative und dezentrale Technologien. Mit über 25 Jahren Erfahrung in der Softwareentwicklung bietet DEVmatrose Lösungen in den Bereichen:
+Die Website wird automatisch via GitHub Actions auf GitHub Pages deployed, wenn Änderungen in den `main`-Branch gepusht werden.
 
-- Web- und Desktop-Anwendungen
-- Dezentrale Systeme (IPFS, Nostr)
-- KI-Integration und Prompt Engineering
-- Open-Source-Entwicklung
+Alternativ kannst du manuell deployen:
+```bash
+npm run deploy
+```
 
-## Über den Entwickler
+Für detaillierte Informationen zum Deployment siehe [GITHUB-PAGES.md](./GITHUB-PAGES.md).
 
-Alexander Friedland ist ein erfahrener Softwareentwickler aus Dresden. Seit 1999 entwickelt er Webanwendungen und hat sich auf moderne Technologien wie JavaScript, Vue, IPFS und Nostr spezialisiert. Seine Leidenschaft gilt innovativen Lösungen und dezentralen Systemen.
+## Projektstruktur
 
-- GitHub: [@ogerly](https://github.com/ogerly)
-- Blog: [imsumpf.blogspot.com](https://imsumpf.blogspot.com)
+```
+/
+├── public/               # Statische Assets
+│   ├── cursor/           # Amiga-Cursor-Dateien
+│   ├── screens/          # Bootscreen und andere Bildschirme
+│   ├── ttf/              # Amiga-Schriftarten (Topaz)
+│   └── favicon.ico       # Website Favicon
+├── src/
+│   ├── assets/           # Projektassets
+│   │   ├── amiga-theme.css  # Amiga-spezifische Styles
+│   │   └── main.css      # Haupt-CSS
+│   ├── components/       # Vue-Komponenten
+│   │   ├── AboutWindow.vue
+│   │   ├── SkillsWindow.vue
+│   │   ├── ProjectsWindow.vue
+│   │   ├── TerminalWindow.vue
+│   │   └── ContactWindow.vue
+│   ├── App.vue          # Haupt-App-Komponente
+│   └── main.js          # App-Einstiegspunkt
+└── vite.config.js       # Vite-Konfiguration
+```
+
+## Anpassung des Base Path
+
+Wenn sich die URL deines GitHub-Repositories ändert, musst du den Base Path in `vite.config.js` aktualisieren:
+
+```js
+export default defineConfig({
+  // Ändere dies entsprechend deinem Repository-Namen
+  base: '/DEVmatrose-website/',
+  // ...
+})
+```
 
 ## Lizenz
 
-Dieses Projekt steht unter der [MIT-Lizenz](LICENSE).
-
----
-
-© 2023 Alexander Friedland | DEVmatrose
+[MIT](https://choosealicense.com/licenses/mit/)

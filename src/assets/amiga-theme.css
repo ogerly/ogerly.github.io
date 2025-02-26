@@ -561,7 +561,7 @@ body {
   padding-bottom: 2px;
 }
 
-/* Add authentic Amiga fonts with CORS-safe URLs */
+/* Korrigierte Pfade für die Schriftarten mit dem neuen Repository-Namen */
 @font-face {
   font-family: 'Topaz';
   src: url('/ttf/topaz.ttf') format('truetype');

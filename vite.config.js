@@ -6,8 +6,9 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   
-  // Für User/Organization Page ohne Unterordner
-  base: '/', 
+  // Bei User Page (ogerly.github.io): base: '/'
+  // Bei Project Page (ogerly.github.io/DEVmatrose-website): base: '/DEVmatrose-website/'
+  base: '/DEVmatrose-website/',
   
   resolve: {
     alias: {
