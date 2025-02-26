@@ -2,7 +2,11 @@
 
 Eine interaktive Single-Page-Anwendung im Amiga-500-Retro-Design, die Alexander Friedland (alias @ogerly) und seine Firma DEVmatrose vorstellt.
 
-![DEVmatrose Amiga Interface](./screenshot.png)
+![Bildschirmfoto vom 2025-02-26 13-30-53](https://github.com/user-attachments/assets/f11dbce2-77db-45a5-b3d7-cf914c2268bc)
+![Bildschirmfoto vom 2025-02-26 13-30-46](https://github.com/user-attachments/assets/19a4f325-5cf6-4209-8e53-aec2ef3318b0)
+![Bildschirmfoto vom 2025-02-26 14-01-34](https://github.com/user-attachments/assets/04dae2b0-ac2e-46f8-bc03-26ecc65d5abc)
+
+
 
 ## Live-Demo
 
