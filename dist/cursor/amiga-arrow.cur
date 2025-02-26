@@ -1,4 +1,4 @@
 // Erstelle das Verzeichnis für den Cursor
-mkdir -p /home/tulex/Entwicklung/Projekte/DEVmatrose-website2/DEVmatrose\ -\ Company/public/cursor
+mkdir -p /home/tulex/Entwicklung/Projekte/DEVmatrose-website/DEVmatrose\ -\ Company/public/cursor
 // Die .cur-Datei muss von einem Online-Dienst oder einem Icon-Editor erstellt werden
 // Ein leerer Platzhalter wird erstellt, um den Build zu ermöglichen
