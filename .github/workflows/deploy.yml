@@ -1,15 +1,15 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Läuft bei Pushes auf den main Branch
   push:
     branches: [ main ]
-  # Ermöglicht manuelles Auslösen des Workflows
   workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
       - name: Checkout 🛎️
@@ -33,17 +33,23 @@ jobs:
           # Schriftarten herunterladen
           curl -s -o "dist/ttf/topaz.ttf" https://cdn.jsdelivr.net/gh/rewtnull/amigafonts/ttf/Topaz_a500_v1.0.ttf
           curl -s -o "dist/ttf/TopazPlus.ttf" https://cdn.jsdelivr.net/gh/rewtnull/amigafonts/ttf/TopazPlus_a1200_v1.0.ttf
-          # Assets kopieren
-          cp -r public/cursor/* dist/cursor/ || true
-          cp -r public/screens/* dist/screens/ || true
-          cp public/favicon.ico dist/ || true
+          # Assets kopieren wenn vorhanden
+          if [ -d "public/cursor" ]; then
+            cp -r public/cursor/* dist/cursor/ || true
+          fi
+          if [ -d "public/screens" ]; then
+            cp -r public/screens/* dist/screens/ || true
+          fi
+          if [ -f "public/favicon.ico" ]; then
+            cp public/favicon.ico dist/ || true
+          fi
           # .nojekyll für GitHub Pages erstellen
           touch dist/.nojekyll
       
       - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist           # Der Ordner, der deployt werden soll
-          branch: gh-pages       # Der Branch, auf den deployt wird
-          clean: true            # Löscht existierende Dateien im gh-pages Branch
+          folder: dist
+          branch: gh-pages
+          clean: true
           token: ${{ secrets.GITHUB_TOKEN }} # GitHub stellt automatisch ein Token bereit
