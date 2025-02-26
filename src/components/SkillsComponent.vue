@@ -1,27 +1,12 @@
 <template>
   <div class="skills-component">
-    <div class="skills-grid">
-      <div v-for="(category, index) in data.skills" :key="index" class="skill-category">
-        <h3>{{ category.name }}</h3>
-        <ul class="skill-list">
-          <li v-for="(item, i) in category.items" :key="i">{{ item }}</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="text-content">
-      <h3>Meine Expertise und Leidenschaften</h3>
-      <p>
-        Ich bin nicht nur Entwickler, sondern auch Problemlöser und Innovator.
-        Meine Stärke liegt in der Entwicklung von Web- und Desktopanwendungen, die
-        funktional und ästhetisch überzeugen.
-      </p>
-      <p>
-        Besonders stolz bin ich auf meine Arbeit mit dezentralen Technologien, KI
-        und Open-Source-Projekten. Ich bin überzeugt, dass die Zukunft der Software
-        in der Dezentralisierung liegt. Deshalb arbeite ich mit Protokollen wie
-        Nostr und IPFS, um unabhängige und robuste Anwendungen zu entwickeln.
-      </p>
+    <div v-for="(category, index) in data.skills" :key="index" class="skill-category">
+      <h2>{{ category.name }}</h2>
+      <ul class="skill-list">
+        <li v-for="(item, itemIndex) in category.items" :key="itemIndex">
+          {{ item }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -32,29 +17,47 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
+      default: () => ({
+        skills: [
+          { name: 'Frontend', items: ['HTML', 'CSS', 'JavaScript'] },
+          { name: 'Backend', items: ['Node.js', 'Python'] },
+        ]
+      })
     }
   }
 }
 </script>
 
 <style scoped>
+.skills-component {
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.skill-category {
+  flex: 1;
+  min-width: 200px;
+  background-color: var(--window-gray);
+  padding: 10px;
+  border: 1px solid var(--text-dark);
+}
+
+h2 {
+  margin-top: 0;
+  color: var(--window-blue);
+  border-bottom: 1px solid var(--text-dark);
+  padding-bottom: 5px;
+  font-size: 16px;
+}
+
 .skill-list {
-  list-style-type: none;
-  padding: 0;
+  list-style-type: square;
+  padding-left: 20px;
 }
 
 .skill-list li {
   margin: 5px 0;
-  padding: 3px 0;
-  position: relative;
-  padding-left: 15px;
-}
-
-.skill-list li:before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: var(--window-blue);
 }
 </style>

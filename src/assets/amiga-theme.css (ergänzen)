@@ -1,0 +1,28 @@
+
+/* Blog-Icon */
+.blog-icon {
+  background-color: var(--window-gray);
+  position: relative;
+}
+
+.blog-icon:after {
+  content: "B";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  color: var(--window-blue);
+  font-weight: bold;
+}
+
+.blog-icon-title {
+  background-color: var(--window-gray) !important;
+}
+
+.blog-icon-title:after {
+  content: "B";
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  color: var(--window-blue);
+  font-weight: bold;
+}

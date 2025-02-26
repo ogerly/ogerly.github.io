@@ -1,0 +1,51 @@
+/* Fallback-Stile für fehlende Bilder */
+.image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--window-gray);
+  color: var(--window-blue);
+  font-weight: bold;
+  border: 1px solid var(--text-dark);
+  font-family: 'Topaz', 'Courier New', monospace;
+}
+
+.icon-placeholder {
+  width: 64px;
+  height: 64px;
+  font-size: 12px;
+}
+
+.logo-placeholder {
+  width: 100px;
+  height: 100px;
+  font-size: 18px;
+  border-radius: 5px;
+}
+
+.game-placeholder {
+  width: 300px;
+  height: 200px;
+  font-size: 16px;
+}
+
+/* Automatische Fallbacks für Bilder */
+img.auto-placeholder {
+  position: relative;
+}
+
+img.auto-placeholder::after {
+  content: attr(alt);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--window-gray);
+  color: var(--window-blue);
+  font-weight: bold;
+  border: 1px solid var(--text-dark);
+}

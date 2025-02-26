@@ -598,6 +598,33 @@ body {
   font-display: swap;
 }
 
+/* Deutsche Umlaute und Sonderzeichen für Topaz-Schriftart */
+@font-face {
+  font-family: 'TopazPlus';
+  src: url('/ttf/TopazPlus.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Verwende TopazPlus für Text mit deutschen Umlauten */
+.german-text {
+  font-family: 'TopazPlus', 'Topaz', 'Courier New', monospace;
+}
+
+/* Optional: Automatischer Ersatz von ß durch ss */
+.auto-convert-eszett {
+  text-transform: none; /* Verhindert, dass anderer Text-Transform die Ersetzung beeinflusst */
+}
+
+.auto-convert-eszett::before {
+  content: attr(data-text);
+}
+
+/* Alternative: Spezielle Klassen für deutsche Texte */
+.amiga-text-de {
+  font-family: 'TopazPlus', 'Topaz', 'Courier New', monospace;
+}
+
 /* Media queries for responsive layout on different screen sizes */
 @media (max-width: 768px) {
   .window {

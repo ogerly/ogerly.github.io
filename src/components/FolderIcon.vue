@@ -1,12 +1,10 @@
 <template>
-  <div class="folder-icon" @click="$emit('click')">
-    <div class="folder-icon-graphic">
-      <!-- Amiga-Style Disk/Ordner Icon -->
-      <div class="folder-top"></div>
-      <div class="folder-body"></div>
-      <div class="folder-label">{{ label }}</div>
+  <div class="folder-icon-container" @click="handleClick">
+    <div class="folder-icon-visual">
+      <div class="folder-front" :class="{ 'blog-folder': type === 'blog' }"></div>
+      <div class="folder-back" :class="{ 'blog-folder': type === 'blog' }"></div>
     </div>
-    <span class="folder-name">{{ label }}</span>
+    <span class="folder-label">{{ label }}</span>
   </div>
 </template>
 
@@ -16,71 +14,80 @@ export default {
   props: {
     label: {
       type: String,
-      required: true
+      default: 'Folder'
+    },
+    type: {
+      type: String, // 'games', 'blog' usw.
+      default: 'default'
     }
+  },
+  setup(props, { emit }) {
+    const handleClick = () => {
+      emit('click');
+    };
+    
+    return {
+      handleClick
+    };
   }
 }
 </script>
 
 <style scoped>
-.folder-icon {
+.folder-icon-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 10px;
+  width: 70px;
   cursor: pointer;
-  width: 80px;
-  text-align: center;
-  margin-bottom: 15px;
 }
 
-.folder-icon-graphic {
+.folder-icon-visual {
   position: relative;
-  width: 50px;
-  height: 40px;
+  width: 60px;
+  height: 50px;
   margin-bottom: 5px;
 }
 
-.folder-top {
+.folder-back {
   position: absolute;
   top: 0;
-  width: 50px;
-  height: 10px;
-  background-color: var(--folder-yellow);
+  left: 0;
+  width: 60px;
+  height: 45px;
+  background-color: var(--window-blue);
   border: 1px solid var(--text-dark);
-  border-radius: 3px 3px 0 0;
+  border-radius: 2px;
+  z-index: 1;
 }
 
-.folder-body {
+.folder-front {
   position: absolute;
-  bottom: 0;
-  width: 50px;
-  height: 35px;
-  background-color: var(--folder-yellow);
+  top: 5px;
+  left: 0;
+  width: 60px;
+  height: 40px;
+  background-color: var(--window-blue);
   border: 1px solid var(--text-dark);
-  border-radius: 3px;
+  z-index: 2;
 }
 
 .folder-label {
-  position: absolute;
-  top: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 10px;
-  font-weight: bold;
-  color: var(--text-dark);
-}
-
-.folder-name {
-  background-color: var(--workbench-blue);
-  color: var(--text-light);
-  padding: 1px 4px;
-  border-radius: 3px;
+  text-align: center;
   font-size: 12px;
-  box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+  color: white;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
 }
 
-.folder-icon:hover .folder-body {
-  transform: translateY(-2px);
-  box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+/* Spezielles Styling für Blog-Ordner */
+.blog-folder {
+  background-color: #775533; /* Braun für Blog */
+}
+
+/* Animation beim Hover */
+.folder-icon-container:hover .folder-front,
+.folder-icon-container:hover .folder-back {
+  filter: brightness(1.2);
 }
 </style>

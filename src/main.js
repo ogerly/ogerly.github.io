@@ -1,10 +1,19 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
+// Router-Import entfernen
+// import router from './router'
 
-import './assets/main.css'
+import './assets/amiga-theme.css'
+import './assets/app-styles.css'
 
 // Create app with no size constraints
 const app = createApp(App)
+
+// Pinia verwenden
+app.use(createPinia())
+// Router nicht mehr verwenden
+// app.use(router)
 
 // Mount the app
 app.mount('#app')

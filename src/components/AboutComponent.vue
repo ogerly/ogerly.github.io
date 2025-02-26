@@ -1,29 +1,12 @@
 <template>
   <div class="about-component">
-    <div class="text-content">
-      <h2>{{ data.title }}</h2>
-      <p><strong>{{ data.subtitle }}</strong></p>
-      <div class="content-text">
-        <p>{{ data.content }}</p>
-
-        <h3>Mein Weg als Entwickler</h3>
-        <p>
-          Alles begann Ende der 90er, als das Internet noch jung war. Seitdem habe ich mich ständig weiterentwickelt,
-          immer auf der Suche nach neuen Herausforderungen und Technologien, die die Art, wie wir Software nutzen
-          und entwickeln, verändern können. Heute findest du das in meinen 60 GitHub-Repositories wieder –
-          von KI-gestützten Tools über dezentrale Systeme bis hin zu kreativen Datenvisualisierungen.
-        </p>
-
-        <h3>Meine Fähigkeiten und mein Tech-Stack</h3>
-        <p>
-          Ich bin ein Full-Stack-Entwickler mit einem breiten Spektrum an Skills:
-        </p>
-        <ul class="skill-list">
-          <li>Frontend: JavaScript, Vue.js, Nuxt, Vuetify</li>
-          <li>Backend: Node.js, Python, PHP, MySQL, Neo4J</li>
-          <li>Künstliche Intelligenz: Prompt Engineering, GPT-Modelle</li>
-          <li>Blockchain und Web3: Bitcoin, Ethereum, Polkadot, Nostr</li>
-        </ul>
+    <h1>{{ data.title }}</h1>
+    <h2>{{ data.subtitle }}</h2>
+    <div class="about-content">
+      <p>{{ data.content }}</p>
+      <div class="about-actions">
+        <a href="https://github.com/ogerly" target="_blank" class="about-link">GitHub</a>
+        <a href="https://imsumpf.blogspot.com" target="_blank" class="about-link">Blog</a>
       </div>
     </div>
   </div>
@@ -35,7 +18,11 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
+      default: () => ({
+        title: 'About',
+        subtitle: 'Information',
+        content: 'Default content'
+      })
     }
   }
 }
@@ -43,44 +30,42 @@ export default {
 
 <style scoped>
 .about-component {
+  padding: 10px;
+}
+
+h1 {
+  font-size: 18px;
+  margin-top: 0;
+  color: var(--window-blue);
+}
+
+h2 {
+  font-size: 16px;
+  margin-top: 5px;
+  color: var(--text-dark);
+}
+
+.about-content {
+  margin-top: 20px;
+  line-height: 1.5;
+}
+
+.about-actions {
+  margin-top: 20px;
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 }
 
-.content-text {
-  margin-top: 15px;
+.about-link {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: var(--window-blue);
+  color: white;
+  text-decoration: none;
+  border: 1px solid var(--text-dark);
 }
 
-.content-text p {
-  margin-bottom: 15px;
-}
-
-.content-text h3 {
-  color: var(--window-blue);
-  margin: 15px 0 10px;
-  font-size: 14px;
-  font-weight: bold;
-  border-bottom: 1px solid var(--accent-magenta);
-  padding-bottom: 2px;
-}
-
-.skill-list {
-  list-style-type: none;
-  padding: 0 0 0 15px;
-}
-
-.skill-list li {
-  margin: 5px 0;
-  position: relative;
-  padding-left: 20px;
-}
-
-.skill-list li:before {
-  content: "•";
-  position: absolute;
-  left: 5px;
-  color: var(--window-blue);
-  font-weight: bold;
+.about-link:hover {
+  background-color: var(--window-active-blue);
 }
 </style>

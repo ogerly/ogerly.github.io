@@ -1,26 +1,12 @@
 <template>
   <div class="contact-component">
-    <div class="text-content">
-      <h3>Kontaktieren Sie mich</h3>
-      <p>
-        Sie möchten mehr über meine Projekte erfahren, eine Zusammenarbeit
-        besprechen oder einfach Hallo sagen? Ich freue mich über Ihre Nachricht!
-      </p>
-
+    <h2>Kontaktiere mich</h2>
+    <div class="contact-info">
+      <p>Für Projektanfragen und Zusammenarbeit:</p>
       <div class="contact-links">
-        <div v-for="(link, index) in data.links" :key="index" class="contact-link">
-          <div class="link-icon"></div>
-          <a :href="link.url" target="_blank">{{ link.name }}: {{ link.url }}</a>
-        </div>
-      </div>
-
-      <div class="contact-message">
-        <p>
-          Lass uns zusammenarbeiten! Wenn du einen Entwickler suchst, der technisch
-          stark ist und eine Vision für die Zukunft hat, dann bin ich dein Mann.
-          Schau dir meine Projekte auf GitHub an oder melde dich direkt bei mir.
-          Ich freue mich darauf, zu hören, wie wir zusammen etwas Großartiges schaffen können!
-        </p>
+        <a v-for="link in data.links" :key="link.name" :href="link.url" target="_blank" class="contact-link">
+          {{ link.name }}
+        </a>
       </div>
     </div>
   </div>
@@ -32,7 +18,12 @@ export default {
   props: {
     data: {
       type: Object,
-      required: true
+      default: () => ({
+        links: [
+          { name: 'Blog', url: 'https://imsumpf.blogspot.com' },
+          { name: 'GitHub', url: 'https://github.com/ogerly' }
+        ]
+      })
     }
   }
 }
@@ -40,45 +31,41 @@ export default {
 
 <style scoped>
 .contact-component {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  padding: 15px;
+  text-align: center;
+}
+
+h2 {
+  margin-top: 0;
+  color: var(--window-blue);
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.contact-info {
+  background-color: white;
+  padding: 20px;
+  border: 1px solid var(--text-dark);
 }
 
 .contact-links {
-  margin: 15px 0;
-  background-color: #eee;
-  padding: 10px;
-  border: 1px solid #999;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
 }
 
 .contact-link {
-  display: flex;
-  align-items: center;
-  margin: 8px 0;
-}
-
-.link-icon {
-  width: 16px;
-  height: 16px;
+  display: inline-block;
+  padding: 8px 15px;
   background-color: var(--window-blue);
-  margin-right: 10px;
-}
-
-.contact-links a {
-  color: var(--window-blue);
+  color: white;
   text-decoration: none;
+  border: 1px solid var(--text-dark);
+  font-weight: bold;
 }
 
-.contact-links a:hover {
-  text-decoration: underline;
-}
-
-.contact-message {
-  background-color: #ffe;
-  padding: 10px;
-  border: 1px solid #dd8;
-  margin-top: 15px;
-  font-style: italic;
+.contact-link:hover {
+  background-color: var(--window-active-blue);
 }
 </style>

@@ -1,0 +1,75 @@
+<script>
+import AboutComponent from './components/AboutComponent.vue'
+import SkillsComponent from './components/SkillsComponent.vue'
+import ProjectsComponent from './components/ProjectsComponent.vue'
+import ContactComponent from './components/ContactComponent.vue'
+import TerminalComponent from './components/TerminalComponent.vue'
+import GamesWindow from './components/GamesWindow.vue'
+import FolderIcon from './components/FolderIcon.vue'
+import NostrWindow from './components/NostrWindow.vue'
+import BlogWindow from './components/BlogWindow.vue'  // Neue Import-Zeile
+import { gamesData } from './assets/data/games.js'
+import DesktopIcon from './components/DesktopIcon.vue'
+
+export default {
+  name: 'AmigaWorkbench',
+  components: {
+    AboutComponent,
+    SkillsComponent,
+    ProjectsComponent,
+    ContactComponent,
+    TerminalComponent,
+    GamesWindow,
+    FolderIcon,
+    DesktopIcon,
+    NostrWindow,
+    BlogWindow  // Neue Komponente hinzufügen
+  },
+  data() {
+    return {
+      // ...existing code...
+      
+      windows: {
+        // ...existing windows...
+        
+        // Neues Blog-Fenster hinzufügen
+        blog: {
+          visible: false,
+          title: 'Im Sumpf Blog',
+          subtitle: 'Alexander\'s Blog',
+          position: { top: '50px', left: '100px', width: '650px', height: '500px', zIndex: 5 },
+          isMaximized: false,
+          previousPosition: null,
+          component: 'BlogWindow',
+          data: {}
+        },
+        
+        // ...other windows...
+      },
+      
+      // ...rest of existing code...
+    }
+  },
+  
+  // ...existing code...
+}
+</script>
+
+<template>
+  <!-- ...existing code... -->
+  
+  <!-- Desktop icons - add blog icon -->
+  <div class="desktop-icons">
+    <!-- ...existing icons... -->
+    
+    <!-- Blog Icon -->
+    <div class="desktop-icon" @click="toggleWindow('blog')">
+      <div class="icon blog-icon"></div>
+      <span>Im Sumpf Blog</span>
+    </div>
+    
+    <!-- ...other icons... -->
+  </div>
+  
+  <!-- ...existing code... -->
+</template>
