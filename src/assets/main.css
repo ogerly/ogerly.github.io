@@ -44,12 +44,12 @@ a,
 
 @font-face {
   font-family: 'Topaz';
-  src: url('/path/to/topaz.ttf') format('truetype');
+  src: url('/ttf/topaz.ttf') format('truetype');
 }
 
 body {
   background-color: #ccc;
-  cursor: url('/public/cursor/amiga-arrow.cur'), auto;
+  cursor: url('/cursor/amiga-arrow.cur'), auto;
 }
 
 .amiga-container {
