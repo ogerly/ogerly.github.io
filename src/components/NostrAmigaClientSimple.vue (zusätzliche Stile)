@@ -1,0 +1,268 @@
+/* Ergänzung für bestehende Stile in NostrAmigaClientSimple.vue */
+
+.menu-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+  background-color: var(--window-blue);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+}
+
+.global-chat-icon::after {
+  content: "G";
+}
+
+.direct-chat-icon::after {
+  content: "D";
+}
+
+.profile-icon::after {
+  content: "P";
+}
+
+.menu-content {
+  flex: 1;
+}
+
+.menu-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+}
+
+.menu-content p {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* Profil-Bereich */
+.amiga-profile {
+  padding: 15px;
+}
+
+.amiga-profile-card {
+  background-color: white;
+  border: 1px solid var(--text-dark);
+  padding: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--window-blue);
+}
+
+.profile-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--window-blue);
+  margin-right: 15px;
+  position: relative;
+}
+
+.profile-avatar::after {
+  content: "U";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.profile-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.profile-details {
+  margin-bottom: 20px;
+}
+
+.profile-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 8px;
+  background-color: #f0f0f0;
+}
+
+.profile-label {
+  width: 150px;
+  font-weight: bold;
+}
+
+.profile-value {
+  flex: 1;
+  word-break: break-all;
+  font-family: monospace;
+}
+
+.amiga-button-small {
+  padding: 2px 8px;
+  background-color: var(--window-blue);
+  color: white;
+  border: 1px solid var(--text-dark);
+  margin-left: 10px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Topaz', 'Courier New', monospace;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+/* Chat Header Styles */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.chat-title h2 {
+  margin: 0 0 5px 0;
+}
+
+.chat-subtitle {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.chat-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.amiga-button-primary.small, .amiga-button-secondary.small {
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+/* Direct Chat Styles */
+.direct-chat-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contact-info {
+  display: flex;
+  align-items: center;
+}
+
+.contact-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--window-blue);
+  margin-right: 10px;
+  position: relative;
+}
+
+.contact-avatar::after {
+  content: "A";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+}
+
+.contact-name {
+  font-weight: bold;
+}
+
+.contact-pubkey {
+  font-size: 11px;
+  opacity: 0.7;
+  font-family: monospace;
+}
+
+.encryption-badge {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.encryption-icon {
+  margin-right: 5px;
+}
+
+/* Relay Indicators */
+.relay-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.relay-indicators {
+  display: flex;
+  gap: 5px;
+}
+
+.relay-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ccc;
+}
+
+.relay-dot.connected {
+  background-color: #4caf50;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 600px) {
+  .chat-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .chat-actions {
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .direct-chat-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .encryption-badge {
+    margin-top: 10px;
+  }
+  
+  .profile-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .profile-label {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  
+  .amiga-button-small {
+    margin-left: 0;
+    margin-top: 5px;
+  }
+}

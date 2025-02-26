@@ -23,21 +23,42 @@
         </div>
       </div>
       
+      <!-- Welcome & Info Screen -->
+      <div v-else-if="state === 'welcome'" class="amiga-welcome">
+        <h2>Welcome to DEVmatrose NostrOS</h2>
+        <div class="amiga-info-box">
+          <p><strong>What is Nostr?</strong></p>
+          <p>Nostr is a decentralized social network protocol that enables censorship-resistant communication.</p>
+          <p>By using this client, you'll experience decentralized messaging while connecting with Alexander.</p>
+          <p><strong>Why use NostrOS?</strong></p>
+          <p>• Privacy-focused: Your keys, your data</p>
+          <p>• Decentralized: No single point of control</p>
+          <p>• Global: Connect to a worldwide network</p>
+        </div>
+        <div class="amiga-button-row">
+          <button @click="state = 'login'" class="amiga-button-primary">Continue</button>
+        </div>
+      </div>
+      
       <!-- Login Screen -->
       <div v-else-if="state === 'login'" class="amiga-login">
-        <h2>Welcome to NostrOS 1.3</h2>
+        <h2>NostrOS - Your Gateway to Decentralized Communication</h2>
         <div class="amiga-menu">
-          <button @click="state = 'create'" class="amiga-menu-item">Create New Account</button>
-          <button @click="state = 'load'" class="amiga-menu-item">Load Existing Account</button>
+          <button @click="state = 'create'" class="amiga-menu-item">Create New Nostr Identity</button>
+          <button @click="state = 'load'" class="amiga-menu-item">Use Existing Identity</button>
+          <button @click="state = 'welcome'" class="amiga-menu-item secondary">Learn About Nostr</button>
         </div>
       </div>
       
       <!-- Create Account Screen -->
       <div v-else-if="state === 'create'" class="amiga-create">
-        <h2>Create New Account</h2>
+        <h2>Create Your Nostr Identity</h2>
+        <div class="amiga-info-box small">
+          <p>Your identity consists of a public and private key pair. The public key is your address, while the private key controls your account.</p>
+        </div>
         <div class="amiga-form">
           <div class="amiga-form-group">
-            <label>Username:</label>
+            <label>Your Display Name:</label>
             <input v-model="username" type="text" class="amiga-input" />
           </div>
           <div class="amiga-actions">
@@ -47,26 +68,29 @@
         </div>
         
         <div v-if="keyCreated" class="amiga-key-result">
-          <p>Your keys have been generated:</p>
+          <p>Your Nostr identity has been generated:</p>
           <div class="amiga-key-display">
-            <p><strong>Public Key:</strong> {{ publicKey }}</p>
-            <p><strong>Private Key:</strong> {{ privateKey }}</p>
+            <p><strong>Public Key (your address):</strong> {{ publicKey }}</p>
+            <p><strong>Private Key (keep secret!):</strong> {{ privateKey }}</p>
           </div>
           <p class="amiga-warning">⚠️ IMPORTANT: Save your private key securely! It cannot be recovered if lost.</p>
-          <button @click="proceedToChat" class="amiga-button-primary">Enter Chat</button>
+          <button @click="proceedToChat" class="amiga-button-primary">Enter NostrOS</button>
         </div>
       </div>
       
       <!-- Load Account Screen -->
       <div v-else-if="state === 'load'" class="amiga-load">
-        <h2>Load Existing Account</h2>
+        <h2>Access Your Nostr Identity</h2>
+        <div class="amiga-info-box small">
+          <p>Enter your credentials to connect with your existing Nostr identity.</p>
+        </div>
         <div class="amiga-form">
           <div class="amiga-form-group">
-            <label>Username:</label>
+            <label>Your Display Name:</label>
             <input v-model="username" type="text" class="amiga-input" />
           </div>
           <div class="amiga-form-group">
-            <label>Private Key:</label>
+            <label>Your Private Key:</label>
             <input v-model="privateKey" type="password" class="amiga-input" />
           </div>
           <div class="amiga-actions">
@@ -76,23 +100,100 @@
         </div>
       </div>
       
-      <!-- Chat Screen -->
-      <div v-else-if="state === 'chat'" class="amiga-chat">
+      <!-- Chat Hub Screen -->
+      <div v-else-if="state === 'chat-hub'" class="amiga-chat-hub">
+        <h2>NostrOS Communication Hub</h2>
+        <div class="amiga-info-box">
+          <p>Welcome to your Nostr communication center, {{ username }}!</p>
+          <p>From here you can participate in the global conversation or send direct messages.</p>
+        </div>
+        
+        <div class="amiga-menu">
+          <button @click="enterGlobalChat" class="amiga-menu-item">
+            <div class="menu-icon global-chat-icon"></div>
+            <div class="menu-content">
+              <h3>Global Chat</h3>
+              <p>Join the public conversation with the Nostr community</p>
+            </div>
+          </button>
+          
+          <button @click="enterDirectChat" class="amiga-menu-item">
+            <div class="menu-icon direct-chat-icon"></div>
+            <div class="menu-content">
+              <h3>Message Alexander</h3>
+              <p>Start a private conversation with DEVmatrose founder</p>
+            </div>
+          </button>
+          
+          <button @click="state = 'profile'" class="amiga-menu-item secondary">
+            <div class="menu-icon profile-icon"></div>
+            <div class="menu-content">
+              <h3>Your Profile</h3>
+              <p>View and manage your Nostr identity</p>
+            </div>
+          </button>
+        </div>
+      </div>
+      
+      <!-- User Profile Screen -->
+      <div v-else-if="state === 'profile'" class="amiga-profile">
+        <h2>Your Nostr Profile</h2>
+        <div class="amiga-profile-card">
+          <div class="profile-header">
+            <div class="profile-avatar"></div>
+            <div class="profile-name">{{ username }}</div>
+          </div>
+          
+          <div class="profile-details">
+            <div class="profile-item">
+              <div class="profile-label">Public Key:</div>
+              <div class="profile-value">{{ shortenKey(publicKey) }}</div>
+              <button @click="copyToClipboard(publicKey)" class="amiga-button-small">Copy</button>
+            </div>
+            
+            <div class="profile-item">
+              <div class="profile-label">Nostr Address:</div>
+              <div class="profile-value">{{ username }}@nostros.devmatrose.com</div>
+              <button @click="copyToClipboard(username + '@nostros.devmatrose.com')" class="amiga-button-small">Copy</button>
+            </div>
+          </div>
+          
+          <div class="profile-actions">
+            <button @click="state = 'chat-hub'" class="amiga-button-primary">Back to Hub</button>
+            <button @click="logOut" class="amiga-button-secondary">Log Out</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Global Chat Screen -->
+      <div v-else-if="state === 'chat' && chatMode === 'global'" class="amiga-chat">
+        <div class="chat-header">
+          <div class="chat-title">
+            <h2>Global Chat</h2>
+            <div class="chat-subtitle">Public conversation visible to everyone</div>
+          </div>
+          <div class="chat-actions">
+            <button @click="state = 'chat-hub'" class="amiga-button-secondary small">Back to Hub</button>
+            <button @click="toggleChatMode" class="amiga-button-primary small">Message Alexander</button>
+          </div>
+        </div>
+        
         <div class="amiga-chat-info">
-          <h2>NostrOS Chat</h2>
-          <p>Connected as: {{ username }}</p>
-          <div class="amiga-relay-status">
-            <p>Connected Relays:</p>
-            <ul>
-              <li v-for="(relay, index) in relays" :key="index" :class="{ 'connected': relay.connected }">
-                {{ relay.url }} - {{ relay.connected ? 'Connected' : 'Connecting...' }}
-              </li>
-            </ul>
+          <div class="relay-info">
+            <p>Connected as: {{ username }}</p>
+            <div class="amiga-relay-status">
+              <p>Relays: {{ connectedRelaysCount }}/{{ relays.length }} connected</p>
+              <div class="relay-indicators">
+                <span v-for="(relay, index) in relays" :key="index" 
+                      class="relay-dot" :class="{ 'connected': relay.connected }"></span>
+              </div>
+            </div>
           </div>
         </div>
         
         <div class="amiga-messages">
-          <div v-for="(message, index) in messages" :key="index" class="amiga-message" :class="{ 'own-message': message.own }">
+          <div v-for="(message, index) in globalMessages" :key="index" 
+               class="amiga-message" :class="{ 'own-message': message.own }">
             <div class="message-header">
               <strong>{{ message.author }}</strong>
               <span>{{ message.timestamp }}</span>
@@ -102,8 +203,53 @@
         </div>
         
         <div class="amiga-chat-input">
-          <input v-model="newMessage" type="text" class="amiga-input" placeholder="Type your message..." @keyup.enter="sendSimulatedMessage" />
-          <button @click="sendSimulatedMessage" class="amiga-button-primary">Send</button>
+          <input v-model="newMessage" type="text" class="amiga-input" 
+                 placeholder="Type your message to global chat..." @keyup.enter="sendGlobalMessage" />
+          <button @click="sendGlobalMessage" class="amiga-button-primary">Send</button>
+        </div>
+      </div>
+      
+      <!-- Direct Message Screen -->
+      <div v-else-if="state === 'chat' && chatMode === 'direct'" class="amiga-chat direct-chat">
+        <div class="chat-header">
+          <div class="chat-title">
+            <h2>Message with Alexander</h2>
+            <div class="chat-subtitle">Private encrypted conversation</div>
+          </div>
+          <div class="chat-actions">
+            <button @click="state = 'chat-hub'" class="amiga-button-secondary small">Back to Hub</button>
+            <button @click="toggleChatMode" class="amiga-button-primary small">Global Chat</button>
+          </div>
+        </div>
+        
+        <div class="amiga-chat-info direct-chat-info">
+          <div class="contact-info">
+            <div class="contact-avatar"></div>
+            <div class="contact-details">
+              <div class="contact-name">Alexander Friedland</div>
+              <div class="contact-pubkey">{{ shortenKey(alexanderPubkey) }}</div>
+            </div>
+          </div>
+          <div class="encryption-badge">
+            <span class="encryption-icon">🔒</span> End-to-end encrypted
+          </div>
+        </div>
+        
+        <div class="amiga-messages">
+          <div v-for="(message, index) in directMessages" :key="index" 
+               class="amiga-message" :class="{ 'own-message': message.own }">
+            <div class="message-header">
+              <strong>{{ message.author }}</strong>
+              <span>{{ message.timestamp }}</span>
+            </div>
+            <p>{{ message.content }}</p>
+          </div>
+        </div>
+        
+        <div class="amiga-chat-input">
+          <input v-model="newDirectMessage" type="text" class="amiga-input" 
+                 placeholder="Type your message to Alexander..." @keyup.enter="sendDirectMessage" />
+          <button @click="sendDirectMessage" class="amiga-button-primary">Send</button>
         </div>
       </div>
     </div>
@@ -116,7 +262,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 export default {
   name: 'NostrAmigaClientSimple',
@@ -126,6 +272,7 @@ export default {
     const startupProgress = ref(0);
     const statusMessage = ref('Booting NostrOS 1.3...');
     const currentTime = ref('');
+    const chatMode = ref('global'); // 'global' or 'direct'
     
     // User data with environment variables
     const username = ref(import.meta.env.VITE_NOSTR_USER_NAME || '');
@@ -133,9 +280,14 @@ export default {
     const privateKey = ref(import.meta.env.VITE_NOSTR_PRIVATE_KEY || '');
     const keyCreated = ref(!!import.meta.env.VITE_NOSTR_PRIVATE_KEY);
     
+    // Alexander's public key (website owner)
+    const alexanderPubkey = ref('9051c383098f3ce60eda261242809236b866e293b356c0f5e58bff414d0cdde4');
+    
     // Chat data
-    const messages = ref([]);
+    const globalMessages = ref([]);
+    const directMessages = ref([]);
     const newMessage = ref('');
+    const newDirectMessage = ref('');
     
     // Default relays - these are some commonly used Nostr relays
     const relays = ref([
@@ -146,22 +298,52 @@ export default {
       { url: 'wss://relay.nostr.band', connected: false }
     ]);
     
+    // Computed properties
+    const connectedRelaysCount = computed(() => {
+      return relays.value.filter(relay => relay.connected).length;
+    });
+    
     // Timer for updating current time
     let clockTimer = null;
     
-    // Demo welcome messages
-    const demoMessages = [
+    // Demo welcome messages for global chat
+    const demoGlobalMessages = [
       {
         id: '1',
         author: 'System',
-        content: 'Welcome to NostrOS 1.3! This is a simulated chat environment.',
+        content: 'Welcome to NostrOS Global Chat! This is a simulated public chat environment.',
         timestamp: getTimeString(),
         own: false
       },
       {
         id: '2',
         author: 'NostrBot',
-        content: 'Type a message below to interact with the simulated chat.',
+        content: 'Type a message below to interact with the global chat. Anyone on the network can see these messages.',
+        timestamp: getTimeString(),
+        own: false
+      },
+      {
+        id: '3',
+        author: 'alice',
+        content: 'Has anyone seen the latest Bitcoin price? It\'s going to the moon! 🚀',
+        timestamp: getTimeString(),
+        own: false
+      },
+      {
+        id: '4',
+        author: 'bob21',
+        content: 'I just set up my own Nostr relay. It\'s amazing how easy it was!',
+        timestamp: getTimeString(),
+        own: false
+      }
+    ];
+    
+    // Demo welcome messages for direct chat
+    const demoDMMessages = [
+      {
+        id: '1',
+        author: 'Alexander',
+        content: 'Hello! Thanks for reaching out through NostrOS. How can I help you today?',
         timestamp: getTimeString(),
         own: false
       }
@@ -182,7 +364,7 @@ export default {
         startupProgress.value += 5;
         if (startupProgress.value >= 100) {
           clearInterval(interval);
-          state.value = 'login';
+          state.value = 'welcome'; // Show welcome screen first
           statusMessage.value = 'Ready';
         }
       }, 200);
@@ -228,14 +410,35 @@ export default {
     };
     
     const proceedToChat = () => {
-      state.value = 'chat';
-      statusMessage.value = 'Connecting to relays...';
+      state.value = 'chat-hub'; // Go to chat hub instead of directly to chat
+      statusMessage.value = 'Welcome to NostrOS';
       simulateConnectingToRelays();
       
-      // Add demo messages to chat
-      setTimeout(() => {
-        messages.value = [...demoMessages];
-      }, 1500);
+      // Pre-load messages
+      globalMessages.value = [...demoGlobalMessages];
+      directMessages.value = [...demoDMMessages];
+    };
+    
+    const enterGlobalChat = () => {
+      state.value = 'chat';
+      chatMode.value = 'global';
+      statusMessage.value = 'Connected to Global Chat';
+    };
+    
+    const enterDirectChat = () => {
+      state.value = 'chat';
+      chatMode.value = 'direct';
+      statusMessage.value = 'Private Chat with Alexander';
+    };
+    
+    const toggleChatMode = () => {
+      if (chatMode.value === 'global') {
+        chatMode.value = 'direct';
+        statusMessage.value = 'Private Chat with Alexander';
+      } else {
+        chatMode.value = 'global';
+        statusMessage.value = 'Connected to Global Chat';
+      }
     };
     
     const simulateConnectingToRelays = () => {
@@ -243,17 +446,14 @@ export default {
       relays.value.forEach((relay, index) => {
         setTimeout(() => {
           relay.connected = true;
-          if (index === relays.value.length - 1) {
-            statusMessage.value = 'Connected to relays';
-          }
         }, 1000 + index * 500);
       });
     };
     
-    const sendSimulatedMessage = () => {
+    const sendGlobalMessage = () => {
       if (!newMessage.value.trim()) return;
       
-      // Add user message
+      // Add user message to global chat
       const userMessage = {
         id: Date.now().toString(),
         author: username.value,
@@ -262,43 +462,124 @@ export default {
         own: true
       };
       
-      messages.value.push(userMessage);
+      globalMessages.value.push(userMessage);
       
       // Clear input
       const sentContent = newMessage.value;
       newMessage.value = '';
-      statusMessage.value = 'Message sent';
+      statusMessage.value = 'Message sent to global chat';
       
-      // Simulate a response after a short delay
+      // Simulate responses from other users after a delay
       setTimeout(() => {
-        const responseContent = getSimulatedResponse(sentContent);
-        messages.value.push({
+        const responseContent = getGlobalChatResponse(sentContent);
+        globalMessages.value.push({
           id: (Date.now() + 1).toString(),
-          author: 'NostrBot',
+          author: getRandomUser(),
           content: responseContent,
           timestamp: getTimeString(),
           own: false
         });
-      }, 1500);
+      }, 2500 + Math.random() * 3000);
     };
     
-    // Simple chatbot responses
-    const getSimulatedResponse = (message) => {
+    const sendDirectMessage = () => {
+      if (!newDirectMessage.value.trim()) return;
+      
+      // Add user message to direct messages
+      const userMessage = {
+        id: Date.now().toString(),
+        author: username.value,
+        content: newDirectMessage.value,
+        timestamp: getTimeString(),
+        own: true
+      };
+      
+      directMessages.value.push(userMessage);
+      
+      // Clear input
+      const sentContent = newDirectMessage.value;
+      newDirectMessage.value = '';
+      statusMessage.value = 'Private message sent to Alexander';
+      
+      // Simulate response from Alexander after a delay
+      setTimeout(() => {
+        const responseContent = getAlexanderResponse(sentContent);
+        directMessages.value.push({
+          id: (Date.now() + 1).toString(),
+          author: 'Alexander',
+          content: responseContent,
+          timestamp: getTimeString(),
+          own: false
+        });
+      }, 2000 + Math.random() * 2000);
+    };
+    
+    // Simple response generation for global chat
+    const getGlobalChatResponse = (message) => {
+      const responses = [
+        "That's interesting! Anyone else have thoughts on this?",
+        "I've been thinking about that too recently.",
+        "Thanks for sharing that with the community.",
+        "I totally agree with your point there.",
+        "That's a unique perspective, I hadn't considered that.",
+        "The Nostr protocol is perfect for discussions like this.",
+        "This is why decentralized platforms are the future.",
+        "Have you tried using NIP-07 extensions for that?",
+        "That reminds me of something I read on another relay."
+      ];
+      
+      return responses[Math.floor(Math.random() * responses.length)];
+    };
+    
+    // Simple response generation for Alexander
+    const getAlexanderResponse = (message) => {
       const lowerMsg = message.toLowerCase();
       
       if (lowerMsg.includes('hello') || lowerMsg.includes('hi')) {
-        return `Hello ${username.value}! How are you today?`;
-      } else if (lowerMsg.includes('help')) {
-        return 'This is a simulated Nostr client. You can pretend to chat but it\'s not connected to real Nostr relays.';
-      } else if (lowerMsg.includes('who are you')) {
-        return 'I\'m NostrBot, a simulated chat partner in this Amiga-style NostrOS client demo.';
+        return `Hello! Thanks for reaching out. How can I assist you with your project?`;
+      } else if (lowerMsg.includes('help') || lowerMsg.includes('question')) {
+        return `I'd be happy to help! Could you provide more details about what you're looking for?`;
       } else if (lowerMsg.includes('nostr')) {
-        return 'Nostr is a decentralized social network protocol. This is a demo of what a Nostr client might look like with Amiga styling.';
-      } else if (lowerMsg.includes('amiga')) {
-        return 'The Amiga was a family of personal computers introduced by Commodore in 1985. This interface mimics the look and feel of AmigaOS.';
+        return `Nostr is a fascinating protocol that enables truly decentralized communication. I've integrated it into this site to demonstrate its capabilities. What aspects are you most interested in?`;
+      } else if (lowerMsg.includes('project') || lowerMsg.includes('work')) {
+        return `I'm always interested in discussing new projects. My expertise is in web development with a focus on decentralized technologies. Would you like to tell me more about what you have in mind?`;
+      } else if (lowerMsg.includes('contact') || lowerMsg.includes('email')) {
+        return `You've already found the best way to reach me! This Nostr-based messaging system ensures our communication is secure and decentralized. Feel free to share more details about your inquiry.`;
       } else {
-        return 'That\'s interesting! Tell me more about your thoughts on decentralized social networks.';
+        return `Thanks for your message. I appreciate you reaching out through this Nostr client. This demonstrates your interest in decentralized technologies, which is great! Please feel free to share more details about how I might be able to help you.`;
       }
+    };
+    
+    const getRandomUser = () => {
+      const users = ['bob21', 'alice', 'satoshi93', 'nostr_fan', 'damus_user', 'relay_admin', 'zap_enthusiast', 'lightning_node'];
+      return users[Math.floor(Math.random() * users.length)];
+    };
+    
+    const shortenKey = (key) => {
+      if (!key) return '';
+      return key.substring(0, 8) + '...' + key.substring(key.length - 4);
+    };
+    
+    const copyToClipboard = (text) => {
+      navigator.clipboard.writeText(text).then(() => {
+        statusMessage.value = 'Copied to clipboard!';
+        setTimeout(() => {
+          statusMessage.value = state.value === 'chat' ? 
+            (chatMode.value === 'global' ? 'Connected to Global Chat' : 'Private Chat with Alexander') : 
+            'Ready';
+        }, 2000);
+      });
+    };
+    
+    const logOut = () => {
+      state.value = 'login';
+      statusMessage.value = 'Logged out';
+      username.value = '';
+      privateKey.value = '';
+      publicKey.value = '';
+      keyCreated.value = false;
+      globalMessages.value = [];
+      directMessages.value = [];
     };
     
     // Lifecycle hooks
@@ -312,7 +593,7 @@ export default {
           import.meta.env.VITE_NOSTR_PRIVATE_KEY) {
         // Verzögerung für bessere UX - nach dem Startup
         setTimeout(() => {
-          if (state.value === 'login') {
+          if (state.value === 'welcome' || state.value === 'login') {
             loadSimulatedAccount();
           }
         }, 2500); // Warte etwas nach dem Startup
@@ -325,6 +606,7 @@ export default {
     
     return {
       state,
+      chatMode,
       startupProgress,
       statusMessage,
       currentTime,
@@ -332,13 +614,24 @@ export default {
       publicKey,
       privateKey,
       keyCreated,
-      messages,
+      alexanderPubkey,
+      globalMessages,
+      directMessages,
       newMessage,
+      newDirectMessage,
       relays,
+      connectedRelaysCount,
       createSimulatedAccount,
       loadSimulatedAccount,
       proceedToChat,
-      sendSimulatedMessage
+      enterGlobalChat,
+      enterDirectChat,
+      toggleChatMode,
+      sendGlobalMessage,
+      sendDirectMessage,
+      shortenKey,
+      copyToClipboard,
+      logOut
     };
   }
 };
@@ -605,5 +898,80 @@ export default {
 
 .amiga-chat-input .amiga-input {
   flex: 1;
+}
+
+/* New styles for enhanced UI */
+
+/* Welcome and Information Screen */
+.amiga-welcome, .amiga-info-box {
+  padding: 15px;
+  text-align: center;
+}
+
+.amiga-info-box {
+  background-color: white;
+  border: 1px solid var(--text-dark);
+  padding: 15px;
+  margin: 15px auto;
+  max-width: 80%;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.amiga-info-box.small {
+  margin: 10px auto;
+  padding: 10px;
+  font-size: 0.9em;
+}
+
+.amiga-button-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Chat Hub Styles */
+.amiga-chat-hub {
+  padding: 15px;
+  text-align: center;
+}
+
+.amiga-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 80%;
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.amiga-menu-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: white;
+  border: 2px solid var(--text-dark);
+  color: var(--text-dark);
+  cursor: pointer;
+  font-family: 'Topaz', 'Courier New', monospace;
+  text-align: left;
+}
+
+.amiga-menu-item.secondary {
+  background-color: var(--window-gray);
+}
+
+.amiga-menu-item:hover {
+  background-color: var(--window-blue);
+  color: white;
+}
+
+.menu-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+  background-color: var(--window-blue);
+  display: flex;
+  justify-content: center;
 }
 </style>
