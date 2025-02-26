@@ -6,7 +6,7 @@ Eine interaktive Single-Page-Anwendung im Amiga-500-Retro-Design, die Alexander 
 
 ## Live-Demo
 
-Die Live-Demo der Anwendung ist hier verfügbar: [https://ogerly.github.io/DEVmatrose-website2/](https://ogerly.github.io/DEVmatrose-website2/)
+Die Live-Demo der Anwendung ist hier verfügbar: [https://ogerly.github.io/Devmatrose-website/](https://ogerly.github.io/Devmatrose-website/)
 
 ## Über das Projekt
 
