@@ -1,0 +1,114 @@
+:root {
+  --workbench-blue: #5A7594;
+  --window-blue: #0055aa;
+  --window-gray: #c0c0c0;
+  --text-dark: #000;
+  --text-light: #fff;
+  --accent-magenta: #ff00ff;
+  --folder-yellow: #ffaa00;
+  --dev-green: #00aa00;
+  --boot-blue: #0000aa;
+  /* Basis-Pfad für Assets, wird durch JavaScript gesetzt */
+  --base-path: '/';
+}
+
+/* Reset and basics */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Cursor-Definition korrigieren */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Topaz', 'Courier New', monospace;
+  /* Den Default-Cursor verwenden, bis wir einen echten Amiga-Cursor haben */
+  cursor: default; 
+}
+
+/* Override Vue default styling that might interfere */
+#app {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw;
+  height: 100vh;
+  display: block !important;
+}
+
+/* ... weitere CSS-Regeln ... */
+
+/* Korrigierte Schriftarteneinbindung mit Basis-Pfad und korrektem Verzeichnis */
+@font-face {
+  font-family: 'Topaz';
+  src: url('var(--base-path)ttf/topaz.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TopazPlus';
+  src: url('var(--base-path)ttf/TopazPlus.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Media queries für responsive Layout */
+@media (max-width: 768px) {
+  .window {
+    min-width: 280px;
+  }
+  
+  .desktop-icons {
+    right: 10px;
+    top: 10px;
+    gap: 10px;
+  }
+  
+  .desktop-icon .icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .skills-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+/* Make sure the app takes full width on mobile devices */
+@media (max-width: 480px) {
+  .window {
+    min-width: 95vw;
+    left: 2.5vw !important;
+  }
+  
+  .window.maximized {
+    left: 0 !important;
+    width: 100vw !important;
+  }
+  
+  .menu-items {
+    gap: 10px;
+  }
+  
+  .desktop-icons {
+    gap: 5px;
+    display: flex;
+    flex-direction: row;
+    right: unset;
+    top: unset;
+    bottom: 50px;
+    left: 10px;
+    width: calc(100vw - 20px);
+    justify-content: space-around;
+  }
+  
+  .desktop-icon {
+    width: auto;
+  }
+}

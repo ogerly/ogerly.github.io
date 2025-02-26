@@ -3,14 +3,11 @@
 # Abbrechen bei Fehlern
 set -e
 
-# Navigiere in das Projektverzeichnis
-cd "DEVmatrose - Company"
-
-# Build erstellen
+# Build erstellen (im Root-Verzeichnis, da sich das Projekt dort befindet)
 npm run build
 
 # In das Build-Verzeichnis wechseln
-cd ../dist
+cd dist
 
 # CNAME-Datei erstellen, falls eine benutzerdefinierte Domain verwendet wird
 # echo 'www.devmatrose.de' > CNAME
