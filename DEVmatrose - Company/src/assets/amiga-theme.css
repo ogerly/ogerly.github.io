@@ -41,10 +41,10 @@ body {
 
 /* ... weitere CSS-Regeln ... */
 
-/* Korrigierte Schriftarteneinbindung mit Basis-Pfad und korrektem Verzeichnis */
+/* Korrigierte Pfade für die Schriftarten - ohne var()-Funktion, die Probleme verursacht */
 @font-face {
   font-family: 'Topaz';
-  src: url('var(--base-path)ttf/topaz.ttf') format('truetype');
+  src: url('/DEVmatrose-website2/ttf/topaz.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -52,7 +52,7 @@ body {
 
 @font-face {
   font-family: 'TopazPlus';
-  src: url('var(--base-path)ttf/TopazPlus.ttf') format('truetype');
+  src: url('/DEVmatrose-website2/ttf/TopazPlus.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;

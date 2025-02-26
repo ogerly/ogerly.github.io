@@ -21,7 +21,7 @@ if (favicon) {
   favicon.href = `${basePath}favicon.ico`
 }
 
-// Setze die CSS-Variable für den Basispfad, damit die Schriftarten korrekt geladen werden
+// Setze die CSS-Variable für den Basispfad
 document.documentElement.style.setProperty('--base-path', basePath)
 
 // Remove default styles that might interfere
@@ -29,5 +29,10 @@ document.body.style.padding = '0'
 document.body.style.margin = '0'
 document.body.style.overflow = 'hidden'
 
-// Aktiviere den benutzerdefinierten Cursor, da wir jetzt eine Cursor-Datei haben
+// Cursor korrekt verlinken - ohne /public/ Präfix, da public direkt ins Root kopiert wird
 document.body.style.cursor = `url(${basePath}cursor/amiga-arrow.cur), default`
+
+// Entferne alte Script-Tags, die 404 verursachen
+document.querySelectorAll('script[src*="assets/js/"]').forEach(script => {
+  script.remove();
+});

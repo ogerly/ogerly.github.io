@@ -6,6 +6,9 @@ set -e
 # Build erstellen (im Root-Verzeichnis, da sich das Projekt dort befindet)
 npm run build
 
+# Assets in den dist-Ordner kopieren
+bash copy-assets.sh
+
 # In das Build-Verzeichnis wechseln
 cd dist
 
