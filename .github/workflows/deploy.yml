@@ -43,6 +43,8 @@ jobs:
           if [ -f "public/favicon.ico" ]; then
             cp public/favicon.ico dist/ || true
           fi
+          # Erstelle CNAME für benutzerdefinierte Domain
+          # echo 'devmatrose.com' > dist/CNAME
           # .nojekyll für GitHub Pages erstellen
           touch dist/.nojekyll
       
@@ -50,6 +52,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist
-          branch: gh-pages
+          repository-name: ogerly/ogerly.github.io
+          branch: main  # Bei User Pages muss der Branch 'main' oder 'master' heißen
           clean: true
-          token: ${{ secrets.GITHUB_TOKEN }} # GitHub stellt automatisch ein Token bereit
+          token: ${{ secrets.PERSONAL_TOKEN }}  # Benötigt einen PAT mit repo-Rechten

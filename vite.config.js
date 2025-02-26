@@ -6,9 +6,8 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   
-  // WICHTIG: base muss dem GitHub Repository-Namen entsprechen
-  // Bei Änderung des Repository-Namens muss dieser Wert angepasst werden
-  base: '/DEVmatrose-website/', 
+  // Für User/Organization Page ohne Unterordner
+  base: '/', 
   
   resolve: {
     alias: {

@@ -24,15 +24,15 @@ if [ ! -d ".git" ]; then
 fi
 
 # Git konfigurieren
-git checkout -B gh-pages
+git checkout -B main
 git add -A
 git commit -m 'Deploy auf GitHub Pages'
 
-# Push zu GitHub Pages-Branch
-# Stelle sicher, dass du Zugriff auf das Repository hast
-git push -f git@github.com:ogerly/DEVmatrose-website.git gh-pages:gh-pages
+# Push zur User Page
+echo "Pushe zu ogerly.github.io Repository..."
+git push -f git@github.com:ogerly/ogerly.github.io.git main:main
 
 # Zurück zum ursprünglichen Verzeichnis
 cd -
 
-echo "Deployment abgeschlossen! Überprüfe deine Seite unter https://ogerly.github.io/DEVmatrose-website/"
+echo "Deployment abgeschlossen! Überprüfe deine Seite unter https://ogerly.github.io/"
