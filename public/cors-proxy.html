@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEVmatrose CORS-Proxy Tester</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    
+    .container {
+      background-color: #f0f0f0;
+      padding: 20px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    
+    button {
+      padding: 10px 15px;
+      background-color: #2b65ad;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    code {
+      background-color: #eee;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    
+    pre {
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 5px;
+      overflow: auto;
+      border: 1px solid #ddd;
+    }
+    
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    
+    .success {
+      color: green;
+      font-weight: bold;
+    }
+    
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>DEVmatrose Blog RSS-Feed Tester</h1>
+  
+  <div class="container">
+    <h2>Test RSS-Feed mit verschiedenen Proxies</h2>
+    
+    <div>
+      <label for="feedUrl">RSS-Feed URL:</label>
+      <input type="text" id="feedUrl" value="https://imsumpf.blogspot.com/feeds/posts/default?alt=rss">
+    </div>
+    
+    <div class="buttons">
+      <button onclick="testDirectFetch()">Direkter Zugriff</button>
+      <button onclick="testCorsAnywhere()">CORS-Anywhere</button>
+      <button onclick="testAllOrigins()">All Origins</button>
+      <button onclick="testCorsIo()">CORS.io</button>
+    </div>
+    
+    <div>
+      <h3>Ergebnis:</h3>
+      <div id="result">
+        <p>Drücke einen Button, um den Test zu starten...</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <h2>Anleitung zur Verwendung eines CORS-Proxy</h2>
+    
+    <p>Wenn du CORS-Fehler beim Zugriff auf den RSS-Feed bekommst, kannst du einen der folgenden Ansätze verwenden:</p>
+    
+    <h3>Option 1: CORS-Anywhere verwenden</h3>
+    <p>Für <code>cors-anywhere</code> musst du der Anwendung erst erlauben, auf deinen Browser zuzugreifen:</p>
+    <ol>
+      <li>Besuche <a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank">https://cors-anywhere.herokuapp.com/corsdemo</a></li>
+      <li>Klicke auf "Request temporary access to the demo server"</li>
+      <li>Versuche den Test erneut</li>
+    </ol>
+    
+    <h3>Option 2: Lokalen Proxy Server verwenden</h3>
+    <p>Du kannst einen lokalen Proxy-Server einrichten, der CORS-Header hinzufügt:</p>
+    <pre>
+// server.js
+const express = require('express');
+const cors = require('cors');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+const app = express();
+app.use(cors());
+
+app.use('/rss', createProxyMiddleware({
+  target: 'https://imsumpf.blogspot.com',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/rss': '/feeds/posts/default?alt=rss'
+  }
+}));
+
+app.listen(3000, () => console.log('Proxy läuft auf http://localhost:3000'));
+    </pre>
+    
+    <p>Anweisungen:</p>
+    <ol>
+      <li><code>npm install express cors http-proxy-middleware</code></li>
+      <li>Speichere den Code als server.js</li>
+      <li>Führe <code>node server.js</code> aus</li>
+      <li>Verwende dann <code>http://localhost:3000/rss</code> als Feed-URL</li>
+    </ol>
+  </div>
+  
+  <script>
+    async function testFetch(url, proxyName) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `<p>Teste mit ${proxyName}...</p>`;
+      
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          const text = await response.text();
+          resultDiv.innerHTML = `
+            <p class="success">✅ Erfolg mit ${proxyName}!</p>
+            <p>Status: ${response.status}</p>
+            <p>Länge: ${text.length} Bytes</p>
+            <details>
+              <summary>XML anzeigen (ersten 500 Zeichen)</summary>
+              <pre>${escapeHTML(text.substring(0, 500))}...</pre>
+            </details>
+          `;
+        } else {
+          resultDiv.innerHTML = `
+            <p class="error">❌ Fehler mit ${proxyName}!</p>
+            <p>Status: ${response.status}</p>
+            <p>Statustext: ${response.statusText}</p>
+          `;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = `
+          <p class="error">❌ Fehler mit ${proxyName}!</p>
+          <p>Fehlermeldung: ${error.message}</p>
+        `;
+      }
+    }
+    
+    function escapeHTML(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+    
+    function getFeedUrl() {
+      return document.getElementById('feedUrl').value;
+    }
+    
+    function testDirectFetch() {
+      testFetch(getFeedUrl(), 'direktem Zugriff');
+    }
+    
+    function testCorsAnywhere() {
+      const url = `https://cors-anywhere.herokuapp.com/${getFeedUrl()}`;
+      testFetch(url, 'CORS-Anywhere');
+    }
+    
+    function testAllOrigins() {
+      const url = `https://api.allorigins.win/raw?url=${encodeURIComponent(getFeedUrl())}`;
+      testFetch(url, 'AllOrigins');
+    }
+    
+    function testCorsIo() {
+      const url = `https://corsproxy.io/?${encodeURIComponent(getFeedUrl())}`;
+      testFetch(url, 'CORS.io');
+    }
+  </script>
+</body>
+</html>
