@@ -14,6 +14,14 @@ export const useWindowStore = defineStore('window', {
     gamesFolderPosition: { top: '50px', left: '100px', width: '400px', zIndex: 5 },
     gamesFolderPreviousPosition: null,
     selectedGame: null,
+    isBlogFolderOpen: false,
+    isBlogFolderMaximized: false,
+    blogFolderPosition: { top: '50px', left: '250px', width: '400px', zIndex: 5 },
+    blogFolderPreviousPosition: null,
+    isAdditionalBlogFolderOpen: false,
+    isAdditionalBlogFolderMaximized: false,
+    additionalBlogFolderPosition: { top: '70px', left: '300px', width: '450px', zIndex: 5 },
+    additionalBlogFolderPreviousPosition: null,
     windows: {
       about: {
         visible: true,
@@ -256,6 +264,30 @@ export const useWindowStore = defineStore('window', {
         } else {
           return this.gamesFolderPosition;
         }
+      } else if (windowName === 'blog-folder') {
+        if (this.isBlogFolderMaximized) {
+          return {
+            top: '20px',
+            left: '0',
+            width: 'calc(100% - 4px)',
+            height: 'calc(100vh - 24px)',
+            zIndex: this.blogFolderPosition.zIndex
+          };
+        } else {
+          return this.blogFolderPosition;
+        }
+      } else if (windowName === 'additional-blog-folder') {
+        if (this.isAdditionalBlogFolderMaximized) {
+          return {
+            top: '20px',
+            left: '0',
+            width: 'calc(100% - 4px)',
+            height: 'calc(100vh - 24px)',
+            zIndex: this.additionalBlogFolderPosition.zIndex
+          };
+        } else {
+          return this.additionalBlogFolderPosition;
+        }
       }
       // Handle other windows
       return this.windows[windowName]?.position;
@@ -274,6 +306,24 @@ export const useWindowStore = defineStore('window', {
         }
         systemStore.playClickSound();
       }
+    },
+    
+    openBlogFolder() {
+      console.log('Blog-Ordner wird geöffnet...');
+      this.isBlogFolderOpen = true;
+      this.setActiveWindow('blog-folder');
+      const systemStore = useSystemStore();
+      systemStore.playDiskSound();
+      systemStore.showDiskActivity();
+    },
+    
+    openAdditionalBlogFolder() {
+      console.log('Zusätzlicher Blog-Ordner wird geöffnet...');
+      this.isAdditionalBlogFolderOpen = true;
+      this.setActiveWindow('additional-blog-folder');
+      const systemStore = useSystemStore();
+      systemStore.playDiskSound();
+      systemStore.showDiskActivity();
     },
     
     resetAllWindows() {

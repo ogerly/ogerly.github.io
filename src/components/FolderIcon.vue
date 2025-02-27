@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
   name: 'FolderIcon',
   props: {
@@ -23,6 +25,7 @@ export default {
   },
   setup(props, { emit }) {
     const handleClick = () => {
+      console.log(`FolderIcon ${props.label} (Typ: ${props.type}) wurde geklickt`);
       emit('click');
     };
     
@@ -41,6 +44,7 @@ export default {
   margin: 10px;
   width: 70px;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .folder-icon-visual {

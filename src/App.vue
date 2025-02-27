@@ -297,6 +297,20 @@ export default {
       openBlogWebsite
     } = useBlogFolderMixin();
     
+    // Debug-Informationen
+    console.log('App.vue setup ausgeführt');
+    console.log('Blog-Ordner-Funktionen verfügbar:', 
+                Boolean(startDragBlogFolder), 
+                Boolean(startDragAdditionalBlogFolder));
+    
+    const testBlogFolders = () => {
+      console.log('Test der Blog-Ordner-Funktionen:');
+      console.log('windowStore.isBlogFolderOpen:', windowStore.isBlogFolderOpen);
+      console.log('windowStore.isAdditionalBlogFolderOpen:', windowStore.isAdditionalBlogFolderOpen);
+      windowStore.openBlogFolder();
+      console.log('Nach openBlogFolder - windowStore.isBlogFolderOpen:', windowStore.isBlogFolderOpen);
+    };
+
     onMounted(() => {
       // Start boot sequence
       systemStore.startBootSequence();
@@ -307,6 +321,9 @@ export default {
       
       // Event listeners for clicking outside to close menus
       document.addEventListener('click', menuStore.handleOutsideClick);
+      
+      // Test Blog-Ordner nach kurzer Verzögerung
+      setTimeout(testBlogFolders, 3000);
     });
     
     onBeforeUnmount(() => {

@@ -4,6 +4,8 @@ import { useBlogStore } from '../stores/blogStore';
 export function useBlogFolderMixin() {
   const windowStore = useWindowStore();
   const blogStore = useBlogStore();
+
+  console.log('Blog Folder Mixin wird initialisiert');
   
   // Starte das Drag von Blog-Ordner
   const startDragBlogFolder = (event) => {
