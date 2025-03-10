@@ -16,7 +16,7 @@ export const useWindowStore = defineStore('window', {
     selectedGame: null,
     isBlogFolderOpen: false,
     isBlogFolderMaximized: false,
-    blogFolderPosition: { top: '50px', left: '250px', width: '400px', zIndex: 5 },
+    blogFolderPosition: { top: '50px', left: '250px', width: '400px', height: '450px', zIndex: 5 },
     blogFolderPreviousPosition: null,
     isAdditionalBlogFolderOpen: false,
     isAdditionalBlogFolderMaximized: false,
@@ -326,6 +326,28 @@ export const useWindowStore = defineStore('window', {
       systemStore.showDiskActivity();
     },
     
+    closeBlogFolder() {
+      this.isBlogFolderOpen = false;
+      const systemStore = useSystemStore();
+      systemStore.playCloseSound();
+    },
+    
+    minimizeBlogFolder() {
+      const systemStore = useSystemStore();
+      systemStore.playClickSound();
+    },
+    
+    closeAdditionalBlogFolder() {
+      this.isAdditionalBlogFolderOpen = false;
+      const systemStore = useSystemStore();
+      systemStore.playCloseSound();
+    },
+    
+    minimizeAdditionalBlogFolder() {
+      const systemStore = useSystemStore();
+      systemStore.playClickSound();
+    },
+    
     resetAllWindows() {
       for (const winKey in this.windows) {
         this.windows[winKey].visible = false;
@@ -340,6 +362,165 @@ export const useWindowStore = defineStore('window', {
       this.isGamesFolderOpen = false;
       this.isGamesFolderMaximized = false;
       this.selectedGame = null;
+    },
+    
+    // Generic window control functions that work for any window
+    handleWindowClose(windowId) {
+      const systemStore = useSystemStore();
+      systemStore.playCloseSound();
+      
+      // Handle regular windows
+      if (this.windows[windowId]) {
+        this.windows[windowId].visible = false;
+        return;
+      }
+      
+      // Handle special windows
+      switch(windowId) {
+        case 'games':
+          this.isGamesWindowOpen = false;
+          break;
+        case 'games-folder':
+          this.isGamesFolderOpen = false;
+          break;
+        case 'blog-folder':
+          this.isBlogFolderOpen = false;
+          break;
+        case 'additional-blog-folder':
+          this.isAdditionalBlogFolderOpen = false;
+          break;
+        default:
+          console.warn(`Unknown window ID: ${windowId}`);
+      }
+    },
+    
+    handleWindowMinimize(windowId) {
+      const systemStore = useSystemStore();
+      systemStore.playClickSound();
+      
+      // Handle regular windows
+      if (this.windows[windowId]) {
+        // Just flash the window for fun
+        const win = this.windows[windowId];
+        win.position = { ...win.position, opacity: 0.5 };
+        setTimeout(() => {
+          win.position = { ...win.position, opacity: 1 };
+        }, 200);
+        return;
+      }
+      
+      // Special windows don't have real minimize function yet
+      // Could implement minimizing to a taskbar in the future
+    },
+    
+    handleWindowMaximize(windowId, newPosition) {
+      const systemStore = useSystemStore();
+      systemStore.playClickSound();
+      
+      // Handle regular windows
+      if (this.windows[windowId]) {
+        const win = this.windows[windowId];
+        if (!win.isMaximized) {
+          win.previousPosition = { ...win.position };
+          win.position = {
+            top: '20px',
+            left: '0',
+            width: 'calc(100% - 4px)',
+            height: 'calc(100vh - 24px)',
+            zIndex: win.position.zIndex
+          };
+          win.isMaximized = true;
+        } else {
+          win.position = win.previousPosition;
+          win.isMaximized = false;
+        }
+        return;
+      }
+      
+      // Handle special windows
+      switch(windowId) {
+        case 'games':
+          this.isGamesMaximized = !this.isGamesMaximized;
+          break;
+        case 'games-folder':
+          if (!this.isGamesFolderMaximized) {
+            this.gamesFolderPreviousPosition = {...this.gamesFolderPosition};
+            this.gamesFolderPosition = newPosition || {
+              top: '20px',
+              left: '0',
+              width: 'calc(100% - 4px)',
+              height: 'calc(100vh - 24px)',
+              zIndex: this.gamesFolderPosition.zIndex
+            };
+          } else {
+            this.gamesFolderPosition = this.gamesFolderPreviousPosition;
+          }
+          this.isGamesFolderMaximized = !this.isGamesFolderMaximized;
+          break;
+        case 'blog-folder':
+          if (!this.isBlogFolderMaximized) {
+            this.blogFolderPreviousPosition = {...this.blogFolderPosition};
+            this.blogFolderPosition = newPosition || {
+              top: '20px',
+              left: '0',
+              width: 'calc(100% - 4px)',
+              height: 'calc(100vh - 24px)',
+              zIndex: this.blogFolderPosition.zIndex
+            };
+          } else {
+            this.blogFolderPosition = this.blogFolderPreviousPosition;
+          }
+          this.isBlogFolderMaximized = !this.isBlogFolderMaximized;
+          break;
+        case 'additional-blog-folder':
+          if (!this.isAdditionalBlogFolderMaximized) {
+            this.additionalBlogFolderPreviousPosition = {...this.additionalBlogFolderPosition};
+            this.additionalBlogFolderPosition = newPosition || {
+              top: '20px',
+              left: '0',
+              width: 'calc(100% - 4px)',
+              height: 'calc(100vh - 24px)',
+              zIndex: this.additionalBlogFolderPosition.zIndex
+            };
+          } else {
+            this.additionalBlogFolderPosition = this.additionalBlogFolderPreviousPosition;
+          }
+          this.isAdditionalBlogFolderMaximized = !this.isAdditionalBlogFolderMaximized;
+          break;
+        default:
+          console.warn(`Unknown window ID for maximize: ${windowId}`);
+      }
+    },
+    
+    updateWindowPosition(windowId, newPosition) {
+      // Handle regular windows
+      if (this.windows[windowId]) {
+        this.windows[windowId].position = newPosition;
+        return;
+      }
+      
+      // Handle special windows
+      switch(windowId) {
+        case 'games':
+          // Implement if needed
+          break;
+        case 'games-folder':
+          this.gamesFolderPosition = newPosition;
+          break;
+        case 'blog-folder':
+          this.blogFolderPosition = newPosition;
+          break;
+        case 'additional-blog-folder':
+          this.additionalBlogFolderPosition = newPosition;
+          break;
+        default:
+          console.warn(`Unknown window ID for position update: ${windowId}`);
+      }
+    },
+    
+    handleWindowDrag(windowId) {
+      const systemStore = useSystemStore();
+      systemStore.showDiskActivity();
     }
   }
 });
