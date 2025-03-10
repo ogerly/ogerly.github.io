@@ -15,10 +15,12 @@
         <div class="blog-progress-bar">
           <div :style="{ width: blogStore.loadingProgress + '%' }" class="blog-progress"></div>
         </div>
+        <p class="loading-text">Lade Blog-Einträge...</p>
       </div>
       
       <div v-else-if="blogStore.error" class="blog-error">
         Fehler beim Laden der Blog-Einträge.
+        <button @click="refreshBlog" class="blog-retry-button">Erneut versuchen</button>
       </div>
       
       <div v-else-if="blogStore.blogData.posts.length === 0" class="blog-empty">
@@ -55,15 +57,23 @@ export default {
       return blogStore.blogData.posts.slice(0, 3);
     });
     
+    const refreshBlog = () => {
+      blogStore.loadBlogData(true); // Force reload
+    };
+    
     onMounted(() => {
-      blogStore.loadBlogData();
+      // Check if blog data is already loaded or being loaded
+      if (!blogStore.loading && blogStore.blogData.posts.length === 0) {
+        blogStore.loadBlogData();
+      }
     });
     
     return {
       blogStore,
       blogPosts,
       logoSrc,
-      useDefaultLogo
+      useDefaultLogo,
+      refreshBlog
     };
   }
 }
@@ -124,6 +134,27 @@ export default {
   height: 100%;
   background-color: var(--window-blue);
   transition: width 0.3s ease;
+}
+
+.loading-text {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.blog-error {
+  padding: 20px;
+}
+
+.blog-retry-button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: var(--window-blue);
+  color: white;
+  border: 1px solid var(--text-dark);
+  cursor: pointer;
+  font-family: 'Topaz', 'Courier New', monospace;
+  font-size: 12px;
 }
 
 .blog-posts {

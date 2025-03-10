@@ -7,56 +7,45 @@ export function useBlogFolderMixin() {
 
   console.log('Blog Folder Mixin wird initialisiert');
   
-  // Starte das Drag von Blog-Ordner
+  // Blog folder window dragging
   const startDragBlogFolder = (event) => {
-    windowStore.startDrag('blog-folder', event);
+    if (!windowStore.windows || !windowStore.windows['blog-folder']) {
+      console.error('Blog folder window not found in windowStore');
+      return;
+    }
+    windowStore.startDrag(event, 'blog-folder');
   };
   
-  // Maximieren/Wiederherstellen des Blog-Ordnerfensters
   const maximizeBlogFolder = () => {
-    if (!windowStore.isBlogFolderMaximized) {
-      windowStore.blogFolderPreviousPosition = {...windowStore.blogFolderPosition};
-      windowStore.isBlogFolderMaximized = true;
-    } else {
-      windowStore.blogFolderPosition = windowStore.blogFolderPreviousPosition;
-      windowStore.isBlogFolderMaximized = false;
-    }
+    windowStore.maximizeWindow('blog-folder');
   };
   
-  // Schließen des Blog-Ordnerfensters
   const closeBlogFolder = () => {
-    windowStore.isBlogFolderOpen = false;
+    windowStore.closeBlogFolder();
   };
   
-  // Starte das Drag vom zusätzlichen Blog-Ordner
+  // Additional Blog folder window dragging
   const startDragAdditionalBlogFolder = (event) => {
-    windowStore.startDrag('additional-blog-folder', event);
+    if (!windowStore.windows || !windowStore.windows['additional-blog-folder']) {
+      console.error('Additional blog folder window not found in windowStore');
+      return;
+    }
+    windowStore.startDrag(event, 'additional-blog-folder');
   };
   
-  // Maximieren/Wiederherstellen des zusätzlichen Blog-Ordnerfensters
   const maximizeAdditionalBlogFolder = () => {
-    if (!windowStore.isAdditionalBlogFolderMaximized) {
-      windowStore.additionalBlogFolderPreviousPosition = {...windowStore.additionalBlogFolderPosition};
-      windowStore.isAdditionalBlogFolderMaximized = true;
-    } else {
-      windowStore.additionalBlogFolderPosition = windowStore.additionalBlogFolderPreviousPosition;
-      windowStore.isAdditionalBlogFolderMaximized = false;
-    }
+    windowStore.maximizeWindow('additional-blog-folder');
   };
   
-  // Schließen des zusätzlichen Blog-Ordnerfensters
   const closeAdditionalBlogFolder = () => {
-    windowStore.isAdditionalBlogFolderOpen = false;
+    windowStore.closeAdditionalBlogFolder();
   };
   
-  // Blog-Post öffnen (in neuem Tab)
+  // Blog post actions
   const openBlogPost = (url) => {
-    if (url) {
-      window.open(url, '_blank');
-    }
+    window.open(url, '_blank');
   };
   
-  // Direktes Öffnen der Blog-Seite
   const openBlogWebsite = () => {
     window.open('https://imsumpf.blogspot.com', '_blank');
   };

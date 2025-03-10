@@ -1,22 +1,22 @@
 <template>
   <div class="blog-window">
-    <div class="loading-overlay" v-if="loading">
+    <div class="loading-overlay" v-if="blogStore.loading">
       <div class="amiga-loading">
         <p>Loading Blog...</p>
         <div class="amiga-progress-bar">
-          <div :style="{ width: loadingProgress + '%' }" class="amiga-progress"></div>
+          <div :style="{ width: blogStore.loadingProgress + '%' }" class="amiga-progress"></div>
         </div>
       </div>
     </div>
     
     <div v-else class="blog-content">
       <div class="blog-header">
-        <h1>{{ blogData.title }}</h1>
-        <p class="blog-description">{{ blogData.description }}</p>
+        <h1>{{ blogStore.blogData.title }}</h1>
+        <p class="blog-description">{{ blogStore.blogData.description }}</p>
       </div>
       
       <div class="blog-posts">
-        <div v-for="(post, index) in blogData.posts" :key="index" class="blog-post">
+        <div v-for="(post, index) in blogStore.blogData.posts" :key="index" class="blog-post">
           <div class="post-header">
             <h2 class="post-title">{{ post.title }}</h2>
             <span class="post-date">{{ post.pubDate }}</span>
@@ -38,6 +38,9 @@
       </div>
       
       <div class="blog-footer">
+        <button @click="refreshBlog" class="amiga-button-primary refresh-button">
+          Refresh Blog
+        </button>
         <a href="https://imsumpf.blogspot.com/" target="_blank" class="amiga-button-secondary">
           Visit Full Blog
         </a>
@@ -47,8 +50,8 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import { fetchRssFeed } from '../utils/rssParser';
+import { onMounted } from 'vue';
+import { useBlogStore } from '../stores/blogStore';
 
 export default {
   name: 'BlogWindow',
@@ -59,53 +62,22 @@ export default {
     }
   },
   setup() {
-    const blogData = ref({
-      title: "Im Sumpf Blog",
-      description: "Loading blog posts...",
-      posts: []
-    });
-    const loading = ref(true);
-    const loadingProgress = ref(0);
+    const blogStore = useBlogStore();
     
-    const loadBlogData = async () => {
-      loading.value = true;
-      
-      // Simulate progress
-      const interval = setInterval(() => {
-        loadingProgress.value += Math.floor(Math.random() * 10);
-        if (loadingProgress.value >= 100) {
-          loadingProgress.value = 100;
-          clearInterval(interval);
-        }
-      }, 300);
-      
-      try {
-        // Use CORS proxy for production
-        const rssFeedUrl = 'https://cors-anywhere.herokuapp.com/https://imsumpf.blogspot.com/feeds/posts/default?alt=rss';
-        // For development, you might need a local proxy or browser CORS extension
-        const localDevUrl = 'https://imsumpf.blogspot.com/feeds/posts/default?alt=rss';
-        
-        const data = await fetchRssFeed(import.meta.env.DEV ? localDevUrl : rssFeedUrl);
-        blogData.value = data;
-      } catch (error) {
-        console.error("Failed to load blog:", error);
-      } finally {
-        // Ensure loading is complete
-        loadingProgress.value = 100;
-        setTimeout(() => {
-          loading.value = false;
-        }, 500);
-      }
+    const refreshBlog = () => {
+      blogStore.loadBlogData(true); // Force refresh
     };
     
     onMounted(() => {
-      loadBlogData();
+      // Check if blog data is already loaded or being loaded
+      if (!blogStore.loading && blogStore.blogData.posts.length === 0) {
+        blogStore.loadBlogData();
+      }
     });
     
     return {
-      blogData,
-      loading,
-      loadingProgress
+      blogStore,
+      refreshBlog
     };
   }
 };
@@ -271,5 +243,9 @@ export default {
     flex: 0 0 auto;
     text-align: center;
   }
+}
+
+.refresh-button {
+  margin-right: 10px;
 }
 </style>

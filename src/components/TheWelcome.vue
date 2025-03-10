@@ -64,7 +64,7 @@ export default {
     const windowStore = useWindowStore();
     const blogStore = useBlogStore();
     
-    // Zeige nur die ersten 3 Blog-Einträge
+    // Show only the first 3 blog entries
     const blogPosts = computed(() => {
       return blogStore.blogData.posts.slice(0, 3);
     });
@@ -74,14 +74,12 @@ export default {
     };
     
     onMounted(() => {
-      // Lade Blog-Daten beim Mounten der Komponente
+      // Immediately request blog data when component mounts
       blogStore.loadBlogData();
     });
     
-    // Hinzufügen der Logo-URL für bessere Flexibilität
+    // Logo URL for better flexibility
     const logoUrl = computed(() => {
-      // Versuche zunächst das Logo aus public/
-      // Falls es nicht existiert, nutze placehold.co als Fallback
       return '/logo-devmatrose.png';
     });
     
