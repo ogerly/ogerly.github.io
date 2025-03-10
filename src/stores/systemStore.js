@@ -1,14 +1,23 @@
 import { defineStore } from 'pinia';
+import { useBlogStore } from './blogStore';
 
 export const useSystemStore = defineStore('system', {
   state: () => ({
     systemBooted: false,
     bootMessages: [
-      'Commodore Amiga 500 - Kickstart 1.3',
-      'ROM Version 34.5 (07 Dec 1991)',
-      'DEVmatrose 2.0 (AmigaOS 2.0 compatible)',
-      'CPU: MC68000 @ 7.16MHz',
-      'Memory: 512K Chip RAM, 512K Fast RAM',
+      'DEVmatrose Kickstart 3.1, 40.68',
+      'Copyright © 1999-2023 Alexander Friedland',
+      'DEVmatrose Release 2.0',
+      'Exec 40.10 (7 Jul 2023)',
+      'Initializing System...', 
+      'MC68000 CPU detected at 7.14MHz',
+      'RAM: 1024K Chip RAM, 1MB Fast RAM',
+      'Loading Libraries...',
+      'Mounting file systems...',
+      'Mounting DF0: DEVmatrose',
+      'Mounting DH0: Development',
+      'Initializing Network Services...',
+      'Connecting to RSS Feed...',
       'Loading Workbench...'
     ],
     currentBootMessage: 0,
@@ -20,6 +29,9 @@ export const useSystemStore = defineStore('system', {
   actions: {
     startBootSequence() {
       this.diskReading = true;
+      
+      // Start preloading RSS feed silently during boot
+      this.preloadRssFeed();
       
       const messageInterval = setInterval(() => {
         if (this.currentBootMessage < this.bootMessages.length - 1) {
@@ -71,6 +83,33 @@ export const useSystemStore = defineStore('system', {
     
     playCloseSound() {
       console.log('Close sound played');
+    },
+    
+    // Add preloadRssFeed function to load blog data during boot
+    async preloadRssFeed() {
+      const blogStore = useBlogStore();
+      
+      try {
+        // Check if there's cached data
+        if (blogStore.isCacheValid && blogStore.blogData.posts.length > 0) {
+          console.log('Using cached RSS feed data');
+          return;
+        }
+        
+        // Start loading the feed - silently in background
+        console.log('Preloading RSS feed during boot sequence');
+        await blogStore.loadBlogData();
+      } catch (error) {
+        console.error('Failed to preload RSS feed:', error);
+      }
+    },
+    
+    // Trigger disk activity for RSS feed updates
+    refreshRssFeed() {
+      this.showDiskActivity();
+      
+      const blogStore = useBlogStore();
+      blogStore.loadBlogData(true); // Force refresh
     },
   }
 });
