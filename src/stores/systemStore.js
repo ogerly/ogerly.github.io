@@ -6,9 +6,9 @@ export const useSystemStore = defineStore('system', {
     systemBooted: false,
     bootMessages: [
       'DEVmatrose Kickstart 3.1, 40.68',
-      'Copyright © 1999-2023 Alexander Friedland',
+      'Copyright © 1999-2025 Alexander Friedland',
       'DEVmatrose Release 2.0',
-      'Exec 40.10 (7 Jul 2023)',
+      'Exec 40.10.9 ()',
       'Initializing System...', 
       'MC68000 CPU detected at 7.14MHz',
       'RAM: 1024K Chip RAM, 1MB Fast RAM',
@@ -18,7 +18,11 @@ export const useSystemStore = defineStore('system', {
       'Mounting DH0: Development',
       'Initializing Network Services...',
       'Connecting to RSS Feed...',
-      'Loading Workbench...'
+      'Connecting to Nostr Relay...',
+      'Connecting to Wallet...',
+      'Loading Workbench...',
+      'Willkommen bei DEVmatrose...',
+      'Loading VR / AR Experience...'
     ],
     currentBootMessage: 0,
     diskReading: false,

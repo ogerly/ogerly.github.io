@@ -228,6 +228,10 @@
             type="blog"
             @click="windowStore.openAdditionalBlogFolder"
           />
+          <div class="desktop-icon" @click="windowStore.toggleWindow('vrar')">
+            <div class="icon vrar-icon"></div>
+            <span>VR/AR</span>
+          </div>
         </div>
 
         <!-- FloppyDisk animation -->
@@ -270,6 +274,7 @@ import GamesWindowContent from './components/GamesWindowContent.vue';
 import NostrWindow from './components/NostrWindow.vue';
 import BlogWindow from './components/BlogWindow.vue';
 import FolderIcon from './components/FolderIcon.vue';
+import VRWindow from './components/VRWindow.vue';
 import { gamesData } from './assets/data/games.js';
 
 export default {
@@ -287,7 +292,8 @@ export default {
     GamesWindowContent,
     NostrWindow,
     BlogWindow,
-    FolderIcon
+    FolderIcon,
+    VRWindow
   },
   setup() {
     const systemStore = useSystemStore();
@@ -381,5 +387,15 @@ export default {
 .desktop-icon, 
 .folder-icon {
   pointer-events: auto;
+}
+
+/* Add VR/AR icon style */
+.vrar-icon:after {
+  content: "VR";
+  position: absolute;
+  top: 1px;
+  left: 3px;
+  color: #00ccff;
+  font-weight: bold;
 }
 </style>

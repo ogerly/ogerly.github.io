@@ -105,7 +105,7 @@ export const useBlogStore = defineStore('blog', () => {
       // The RSS feed URL
       const rssFeedUrl = 'https://imsumpf.blogspot.com/feeds/posts/default?alt=rss';
       
-      // Fetch data
+      // Fetch data - will automatically use local proxy in DEV mode
       const data = await fetchRssFeed(rssFeedUrl);
       
       // Update state with fetched data

@@ -116,6 +116,18 @@ export const useWindowStore = defineStore('window', {
         previousPosition: null,
         component: 'BlogWindow',
         data: {}
+      },
+      vrar: {
+        visible: false,
+        title: 'VR/AR Experience',
+        subtitle: 'Virtual Reality Demos',
+        position: { top: '40px', left: '150px', width: '700px', height: '500px', zIndex: 5 },
+        isMaximized: false,
+        previousPosition: null,
+        component: 'VRWindow',
+        data: {
+          activeExample: 'VRExample1'
+        }
       }
     }
   }),
